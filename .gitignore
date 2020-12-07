@@ -1,0 +1,8 @@
+.venv/
+original files/
+.vscode/
+.idea/
+tasks.txt
+components/video/models/yolov3.weights
+output/
+student_interview_data/
