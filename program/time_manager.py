@@ -281,8 +281,13 @@ def run(filename, duration, studentFolder):
 	
 	start_AVrecording(filename)  
 	
-	time.sleep(duration)
-	
+	while duration: 
+		mins, secs = divmod(duration, 60) 
+		timer = '{:02d}:{:02d}'.format(mins, secs) 
+		print(timer, end="\r") 
+		time.sleep(1) 
+		duration -= 1
+		
 	stop_AVrecording(filename)
 	print ("Done")
 

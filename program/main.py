@@ -49,7 +49,7 @@ try:
 
     time.sleep(15)
 
-    questions = open(r"./questions copy.json", 'r')
+    questions = open(r"./questions.json", 'r')
 
     """
     read question and allocated time then run a loop to capture video and save it

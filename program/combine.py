@@ -27,7 +27,7 @@ def combine_f(candidate="tejas@gmail"):
     local_path = os.getcwd()
     parent_path = os.path.dirname(local_path)
     print(parent_path)
-    path = os.path.join( str(parent_path),"student_interview_data",candidate,"\")
+    path = os.path.join( str(parent_path),"student_interview_data",candidate,"\\")
     print(path)
     questions = open(r"./questions copy.json", 'r')
     q=json.load(questions)
@@ -42,4 +42,4 @@ def combine_f(candidate="tejas@gmail"):
     
     with open(path+'result.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
-combine_f()
+combine_f(student_folder_directory)
