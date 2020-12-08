@@ -158,72 +158,80 @@ def print_eye_pos(img, left, right):
         cv2.putText(img, number, (90, 90), font,  
                    1, (0, 255, 255), 2, cv2.LINE_AA) 
 def eye_tracker_f(filename):
-    face_model = get_face_detector()
-    landmark_model = get_landmark_model()
-    left = [36, 37, 38, 39, 40, 41]
-    right = [42, 43, 44, 45, 46, 47]
+    try:
+        face_model = get_face_detector()
+        landmark_model = get_landmark_model()
+        left = [36, 37, 38, 39, 40, 41]
+        right = [42, 43, 44, 45, 46, 47]
 
-    #local_path = os.getcwd()
-    #parent_path = os.path.dirname(local_path)
-    #parent_path=os.path.dirname(parent_path)
-    #parent_path=os.path.dirname(parent_path)
-    #print(local_path)
-    #print(parent_path)
-    #filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
-    ##filename = os.path.join( str(local_path) ,"video","1_reading.avi")
-    print(filename)
+        #local_path = os.getcwd()
+        #parent_path = os.path.dirname(local_path)
+        #parent_path=os.path.dirname(parent_path)
+        #parent_path=os.path.dirname(parent_path)
+        #print(local_path)
+        #print(parent_path)
+        #filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
+        ##filename = os.path.join( str(local_path) ,"video","1_reading.avi")
+        print(filename)
 
-    cap = cv2.VideoCapture(filename)
-    ret, img = cap.read()
-    thresh = img.copy()
-
-    cv2.namedWindow('image')
-    kernel = np.ones((9, 9), np.uint8)
-
-    def nothing(x):
-        pass
-    cv2.createTrackbar('threshold', 'image', 75, 255, nothing)
-
-    global total_frames
-    total_frames=0
-    global not_normal_eye_gaze_frame
-    not_normal_eye_gaze_frame=0
-
-    while(True):
+        cap = cv2.VideoCapture(filename)
         ret, img = cap.read()
-        rects = find_faces(img, face_model)
-        
-        for rect in rects:
-            shape = detect_marks(img, landmark_model, rect)
-            mask = np.zeros(img.shape[:2], dtype=np.uint8)
-            mask, end_points_left = eye_on_mask(mask, left, shape)
-            mask, end_points_right = eye_on_mask(mask, right, shape)
-            mask = cv2.dilate(mask, kernel, 5)
-            
-            eyes = cv2.bitwise_and(img, img, mask=mask)
-            mask = (eyes == [0, 0, 0]).all(axis=2)
-            eyes[mask] = [255, 255, 255]
-            mid = (shape[42][0] + shape[39][0]) // 2
-            eyes_gray = cv2.cvtColor(eyes, cv2.COLOR_BGR2GRAY)
-            threshold = cv2.getTrackbarPos('threshold', 'image')
-            # threshold = 55
-            _, thresh = cv2.threshold(eyes_gray, threshold, 255, cv2.THRESH_BINARY)
-            thresh = process_thresh(thresh)
-            
-            eyeball_pos_left = contouring(thresh[:, 0:mid], mid, img, end_points_left)
-            eyeball_pos_right = contouring(thresh[:, mid:], mid, img, end_points_right, True)
-            print_eye_pos(img, eyeball_pos_left, eyeball_pos_right)
-            # for (x, y) in shape[36:48]:
-            #     cv2.circle(img, (x, y), 2, (255, 0, 0), -1)
-            
-        cv2.imshow('eyes', img)
-        cv2.imshow("image", thresh)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-        
-    cap.release()
-    cv2.destroyAllWindows()
-    print(not_normal_eye_gaze_frame, total_frames)
-    result_ans=round( (not_normal_eye_gaze_frame*100)/total_frames,2 )
-    print("Student was NOT facing the interviewer for ",result_ans,"% of time")
-    return result_ans
+        thresh = img.copy()
+
+        cv2.namedWindow('image')
+        kernel = np.ones((9, 9), np.uint8)
+
+        def nothing(x):
+            pass
+        cv2.createTrackbar('threshold', 'image', 75, 255, nothing)
+
+        global total_frames
+        total_frames=0
+        global not_normal_eye_gaze_frame
+        not_normal_eye_gaze_frame=0
+
+        while(True):
+            ret, img = cap.read()
+            if ret ==True:
+                rects = find_faces(img, face_model)
+                
+                for rect in rects:
+                    shape = detect_marks(img, landmark_model, rect)
+                    mask = np.zeros(img.shape[:2], dtype=np.uint8)
+                    mask, end_points_left = eye_on_mask(mask, left, shape)
+                    mask, end_points_right = eye_on_mask(mask, right, shape)
+                    mask = cv2.dilate(mask, kernel, 5)
+                    
+                    eyes = cv2.bitwise_and(img, img, mask=mask)
+                    mask = (eyes == [0, 0, 0]).all(axis=2)
+                    eyes[mask] = [255, 255, 255]
+                    mid = (shape[42][0] + shape[39][0]) // 2
+                    eyes_gray = cv2.cvtColor(eyes, cv2.COLOR_BGR2GRAY)
+                    threshold = cv2.getTrackbarPos('threshold', 'image')
+                    # threshold = 55
+                    _, thresh = cv2.threshold(eyes_gray, threshold, 255, cv2.THRESH_BINARY)
+                    thresh = process_thresh(thresh)
+                    
+                    eyeball_pos_left = contouring(thresh[:, 0:mid], mid, img, end_points_left)
+                    eyeball_pos_right = contouring(thresh[:, mid:], mid, img, end_points_right, True)
+                    print_eye_pos(img, eyeball_pos_left, eyeball_pos_right)
+                    # for (x, y) in shape[36:48]:
+                    #     cv2.circle(img, (x, y), 2, (255, 0, 0), -1)
+                    
+                cv2.imshow('eyes', img)
+                cv2.imshow("image", thresh)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+            else:
+                break
+        cap.release()
+        cv2.destroyAllWindows()
+        print(not_normal_eye_gaze_frame, total_frames)
+        result_ans=round( (not_normal_eye_gaze_frame*100)/total_frames,2 )
+        print("Student was NOT facing the interviewer for ",result_ans,"% of time")
+        return result_ans
+    except Exception as e:
+        print(str(e))
+        cap.release()
+        cv2.destroyAllWindows()
+        return -1

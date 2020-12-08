@@ -38,10 +38,11 @@ def run_praat_file(c,filename):
     print("sourcerun",sourcerun)
     """
     local_path = os.getcwd()
-    parent_path = os.path.dirname(local_path)
+    parent_path = os.path.dirname(filename)
     sound = filename
     sourcerun = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"myspsolution.praat"
-    path = os.path.join(str(parent_path),"student_interview_data","kevalshah90909@gmail")
+    #path = os.path.join(str(parent_path),"student_interview_data","kevalshah90909@gmail")
+    path=parent_path
     #print("sound  ",sound)
     #print("path   ", path)
     #print("sourcerun", sourcerun)
@@ -274,11 +275,11 @@ def myspgend(c, filename):
     """
     sound = filename
     sourcerun = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"myspsolution.praat"
-    local_path = os.getcwd()
-    parent_path = os.path.dirname(local_path)
+    #local_path = os.getcwd()
+    parent_path = os.path.dirname(filename)
     print(parent_path)
-    c = os.path.join( str(parent_path),"student_interview_data","kevalshah90909@gmail")
-    path = c
+    #c = os.path.join( str(parent_path),"student_interview_data","kevalshah90909@gmail")
+    path = parent_path
     
     try:
         objects = run_file(sourcerun, -20, 2, 0.3, "yes",
@@ -366,7 +367,7 @@ def myspgend(c, filename):
             number = 0
             #print("Voice not recognized")
     except:
-        s+="Try again the sound of the audio was not clear"
+        s="Try again the sound of the audio was not clear"
         number = -1
         
         #print("Try again the sound of the audio was not clear")
@@ -443,14 +444,14 @@ def mysplev(c, filename):
     Spoken Language Proficiency Level estimator,
     based on Machine Learning models of the prosodic features of your speech
     """
-    def my_except_hook(exctype, value, traceback):
-        print('There has been an error in the system')
-    sys.excepthook = my_except_hook
+    #def my_except_hook(exctype, value, traceback):
+    #    print('There has been an error in the system')
+    #sys.excepthook = my_except_hook
     if not sys.warnoptions:
         warnings.simplefilter("ignore")
     sound = filename
     sourcerun = c+"/"+"dataset"+"\\"+"essen"+"\\"+"MLTRNL.praat"
-    path = c+"\\"+"dataset"+"\\"+"audioFiles"+"/"
+    path = os.path.dirname(filename)
     pa1 = c+"\\"+"dataset"+"\\"+"datanewchi23.csv"
     pa7 = c+"\\"+"dataset"+"\\"+"datanewchi45.csv"
     pa5 = c+"\\"+"dataset"+"\\"+"datanewchi34.csv"
@@ -506,9 +507,9 @@ def mysplev(c, filename):
         bg = c
         bi = myspp(bp,bg)
         if bi <85:
-            input(
+            print(
                  "Try again, unnatural-sounding speech detected. No further result. Press any key to exit.")
-            exit()
+            return -1
         filename = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"CART_model.sav"
         model = pickle.load(open(filename, 'rb'))
         predictions = model.predict(x)

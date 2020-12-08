@@ -3,43 +3,51 @@ import json
 from components.video import eye_tracker,face_spoofing,head_pose_estimation
 from components.video import mouth_distance,person_and_phone
 from components.text.src import text_main
-#from components.audio import testpro
-#from components.audio import audio_main
+from components.audio import testpro
+from components.audio import audio_main
 from components.video.Emotion_detection.src import emotions
-import main
+#import main
 def evaluate_video(path,result):
-    result["eye_tracker"]+=eye_tracker.eye_tracker_f(path)
-    result["face_spoofing"]+=face_spoofing.face_spoofing_f(path)
-    result["head_pose"]+=head_pose_estimation.head_pose_estimation_f(path)
-    result["mouth_distance"]+=mouth_distance.mouth_distance_f(path)
-    result["emotions"]+=emotions.emotions_f(path)
+    result["eye_tracker"].append(eye_tracker.eye_tracker_f(path))
+    result["face_spoofing"].append(face_spoofing.face_spoofing_f(path))
+    result["head_pose"].append(head_pose_estimation.head_pose_estimation_f(path))
+    result["mouth_distance"].append(mouth_distance.mouth_distance_f(path))
+    result["emotions"].append(emotions.emotions_f(path))
+    print(result)
 
-def combine_f(candidate="tejas@gmail"):
+def combine_f(candidate="keval@gmail"):
     result={
-        "eye_tracker":0,
-        "face_spoofing":0,
-        "head_pose":0,
-        "mouth_distance":0,
-        "emotions":0,
-        "text":0,
-        "audio":0
+        "eye_tracker":[],
+        "face_spoofing":[],
+        "head_pose":[],
+        "mouth_distance":[],
+        "emotions":[],
+        "text":[],
+        "audio":[[],[],[],[]]
     }
     local_path = os.getcwd()
     parent_path = os.path.dirname(local_path)
-    print(parent_path)
-    path = os.path.join( str(parent_path),"student_interview_data",candidate,"\\")
-    print(path)
-    questions = open(r"./questions copy.json", 'r')
+    #print(parent_path)
+    c = os.path.join(str(parent_path),"student_interview_data",candidate)
+    c=c+"\\"
+    print("printing c"+c)
+    questions = open(r"./questions.json", 'r')
     q=json.load(questions)
-    print(q)
-    l_questions_text=[4]
+    l_questions_text=["4"]
     for q_id in q:
-        evaluate_video(path+str(q[q_id])+"_reading.avi",result)
-        evaluate_video(path+str(q[q_id])+"_answering.avi",result)
-        #result["audio"]+=
-        #if(q_id in l_questions_text):
-            #result["text"]+=text_main.text_analysis(path+str(q[q_id])+"_answering.wav",result)
+        print(q_id,end="\n")
+        print(c+str(q_id)+"_reading.avi")
+        evaluate_video(c+str(q_id)+"_reading.avi",result)
+        evaluate_video(c+str(q_id)+"_answering.avi",result)
+        Gend_value, bal_value, pronoun_value, acc_value=testpro.speech_analysis(c+str(q_id)+"_answering.wav")
+        result["audio"][0].append(Gend_value)
+        result["audio"][1].append(bal_value)
+        result["audio"][2].append(pronoun_value)
+        result["audio"][3].append(acc_value)
+        if(q_id in l_questions_text):
+            result["text"].append(text_main.text_analysis(c+str(q_id)+"_answering.wav"))
     
-    with open(path+'result.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-combine_f(student_folder_directory)
+    with open(c+'result.json', 'w', encoding='utf-8') as f:
+        json.dump(result, f, ensure_ascii=False, indent=4)
+#combine_f(student_folder_directory)
+combine_f()

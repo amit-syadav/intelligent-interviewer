@@ -107,8 +107,11 @@ def detect_marks(img, model, face):
     
     face_img = img[facebox[1]: facebox[3],
                      facebox[0]: facebox[2]]
-    face_img = cv2.resize(face_img, (128, 128))
-    face_img = cv2.cvtColor(face_img, cv2.COLOR_BGR2RGB)
+    try:
+        face_img = cv2.resize(face_img, (128, 128))
+        face_img = cv2.cvtColor(face_img, cv2.COLOR_BGR2RGB)
+    except Exception as e:
+        print(str(e))
     
     # # Actual detection.
     predictions = model.signatures["predict"](
