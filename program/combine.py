@@ -3,7 +3,7 @@ import os
 #from components.video import mouth_distance,person_and_phone
 #from components.audio import testpro
 #from components.audio import audio_main
-#from components.video.Emotion_detection.src import emotions
+from components.video.Emotion_detection.src import emotions
 
 def combine_f(candidate="tejas@gmail"):
     local_path = os.getcwd()

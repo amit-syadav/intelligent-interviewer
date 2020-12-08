@@ -6,4 +6,3 @@ tasks.txt
 program/components/video/models/yolov3.weights
 output/
 student_interview_data/
-program/components/video/Emotion_detection/src/data
