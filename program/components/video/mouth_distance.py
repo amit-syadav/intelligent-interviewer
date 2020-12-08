@@ -9,7 +9,7 @@ import cv2
 from components.video.face_detector import get_face_detector, find_faces
 from components.video.face_landmarks import get_landmark_model, detect_marks, draw_marks
 import os
-def mouth_distance_f(candidate="tejas@gmail"):
+def mouth_distance_f(filename):
     face_model = get_face_detector()
     landmark_model = get_landmark_model()
     outer_points = [[49, 59], [50, 58], [51, 57], [52, 56], [53, 55]]
@@ -18,12 +18,12 @@ def mouth_distance_f(candidate="tejas@gmail"):
     d_inner = [0]*3
     font = cv2.FONT_HERSHEY_SIMPLEX 
 
-    local_path = os.getcwd()
-    parent_path = os.path.dirname(local_path)
-    parent_path=os.path.dirname(parent_path)
-    print(local_path)
-    print(parent_path)
-    filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
+    #local_path = os.getcwd()
+    #parent_path = os.path.dirname(local_path)
+    #parent_path=os.path.dirname(parent_path)
+    #print(local_path)
+    #print(parent_path)
+    #filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
     #filename = os.path.join( str(local_path) ,"video","1_reading.avi")
     print(filename)
 
@@ -80,7 +80,9 @@ def mouth_distance_f(candidate="tejas@gmail"):
             break
     print("total frames",total_frames) 
     print(mouth_open)  
+    result_ans=round( (mouth_open*100)/total_frames,2 )
+    print(result_ans)
     cap.release()
     cv2.destroyAllWindows()
-    return mouth_open,total_frames
+    return result_ans
 #mouth_distance_f()

@@ -157,20 +157,20 @@ def print_eye_pos(img, left, right):
                    1, (0, 255, 255), 2, cv2.LINE_AA) 
         cv2.putText(img, number, (90, 90), font,  
                    1, (0, 255, 255), 2, cv2.LINE_AA) 
-def eye_trackers(candidate="tejas@gmail"):
+def eye_tracker_f(filename):
     face_model = get_face_detector()
     landmark_model = get_landmark_model()
     left = [36, 37, 38, 39, 40, 41]
     right = [42, 43, 44, 45, 46, 47]
 
-    local_path = os.getcwd()
-    parent_path = os.path.dirname(local_path)
-    parent_path=os.path.dirname(parent_path)
-    parent_path=os.path.dirname(parent_path)
-    print(local_path)
-    print(parent_path)
-    filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
-    #filename = os.path.join( str(local_path) ,"video","1_reading.avi")
+    #local_path = os.getcwd()
+    #parent_path = os.path.dirname(local_path)
+    #parent_path=os.path.dirname(parent_path)
+    #parent_path=os.path.dirname(parent_path)
+    #print(local_path)
+    #print(parent_path)
+    #filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
+    ##filename = os.path.join( str(local_path) ,"video","1_reading.avi")
     print(filename)
 
     cap = cv2.VideoCapture(filename)

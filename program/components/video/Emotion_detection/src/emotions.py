@@ -40,7 +40,7 @@ def plot_model_history(model_history):
     axs[1].legend(['train', 'val'], loc='best')
     fig.savefig('plot.png')
     plt.show()
-def emotions_f():
+def emotions_f(filename):
     # Define data generators
     train_dir = 'components/video/Emotion_detection/src/data/train'
     val_dir = 'components/video/Emotion_detection/src/data/test'
@@ -108,11 +108,11 @@ def emotions_f():
         # dictionary which assigns each label an emotion (alphabetical order)
         emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
         l_emotion=[0,0,0,0,0,0,0]
-        local_path = os.getcwd()
-        parent_path = os.path.dirname(local_path)
-        print(local_path)
-        print(parent_path)
-        filename = os.path.join( str(parent_path) ,"student_interview_data\\tejas@gmail","1_reading.avi")
+        #local_path = os.getcwd()
+        #parent_path = os.path.dirname(local_path)
+        #print(local_path)
+        #print(parent_path)
+        #filename = os.path.join( str(parent_path) ,"student_interview_data\\tejas@gmail","1_reading.avi")
         #filename = os.path.join( str(local_path) ,"video","1_reading.avi")
         print(filename)
         cap = cv2.VideoCapture(filename)
@@ -149,4 +149,3 @@ def emotions_f():
         f.close()
         cap.release()
         cv2.destroyAllWindows()
-emotions_f()

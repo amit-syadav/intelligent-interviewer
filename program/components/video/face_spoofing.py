@@ -26,19 +26,19 @@ def calc_hist(img):
         histogram[j] = histr
     return np.array(histogram)
 
-def face_spoofing_f(candidate="tejas@gmail"):
+def face_spoofing_f(filename):
     face_model = get_face_detector()
 
     clf = joblib.load(os.path.join(os.path.dirname(__file__), 'models/face_spoofing.pkl'))
 
-    local_path = os.getcwd()
-    parent_path = os.path.dirname(local_path)
-    parent_path=os.path.dirname(parent_path)
-    print(local_path)
-    print(parent_path)
-    filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
+    #local_path = os.getcwd()
+    #parent_path = os.path.dirname(local_path)
+    #parent_path=os.path.dirname(parent_path)
+    #print(local_path)
+    #print(parent_path)
+    #filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
     #filename = os.path.join( str(local_path) ,"video","1_reading.avi")
-    print(filename)
+    #print(filename)
 
     cap = cv2.VideoCapture(filename)
 

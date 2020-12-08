@@ -124,16 +124,16 @@ def head_pose_points(img, rotation_vector, translation_vector, camera_matrix):
     x = point_2d[2]
     
     return (x, y)
-def head_pose_estimation_f(candidate="tejas@gmail"): 
+def head_pose_estimation_f(filename): 
     face_model = get_face_detector()
     landmark_model = get_landmark_model()
 
-    local_path = os.getcwd()
-    parent_path = os.path.dirname(local_path)
-    parent_path=os.path.dirname(parent_path)
-    print(local_path)
-    print(parent_path)
-    filename = os.path.join( str(local_path) ,"student_interview_data",candidate,"tejas.mp4")
+    #local_path = os.getcwd()
+    ##parent_path = os.path.dirname(local_path)
+    #parent_path=os.path.dirname(parent_path)
+    #print(local_path)
+    #print(parent_path)
+    #filename = os.path.join( str(local_path) ,"student_interview_data",candidate,"tejas.mp4")
     #filename = os.path.join( str(local_path) ,"video","1_reading.avi")
     print(filename)
 

@@ -322,16 +322,16 @@ def weights_download(out='models/yolov3.weights'):
     _ = wget.download('https://pjreddie.com/media/files/yolov3.weights', out='models/yolov3.weights')
     
 # weights_download() # to download weights
-def p_and_p_f(candidate="tejas@gmail"):
+def p_and_p_f(filename):
     yolo = YoloV3()
     load_darknet_weights(yolo, 'models/yolov3.weights') 
 
-    local_path = os.getcwd()
-    parent_path = os.path.dirname(local_path)
-    parent_path=os.path.dirname(parent_path)
-    print(local_path)
-    print(parent_path)
-    filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
+    #local_path = os.getcwd()
+    #parent_path = os.path.dirname(local_path)
+    #parent_path=os.path.dirname(parent_path)
+    #print(local_path)
+    #print(parent_path)
+    #filename = os.path.join( str(parent_path) ,"student_interview_data",candidate,"tejas.mp4")
     #filename = os.path.join( str(local_path) ,"video","1_reading.avi")
     print(filename)
 
