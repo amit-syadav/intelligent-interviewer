@@ -46,7 +46,7 @@ def givKeywordsValue(text1, text2):
         kval = 5
     else:
         kval = 6
-    print(cosine)
+    #print(cosine)
     return kval
 
 """

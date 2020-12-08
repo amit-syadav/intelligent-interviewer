@@ -116,7 +116,7 @@ def emotions_f(filename):
         #filename = os.path.join( str(local_path) ,"video","1_reading.avi")
         print(filename)
         cap = cv2.VideoCapture(filename)
-        f=open("result.txt","a")
+        #f=open("result.txt","a")
         frames=0
         while True:
             # Find haar cascade to draw bounding box around face
@@ -141,11 +141,15 @@ def emotions_f(filename):
             #cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC))
             #if cv2.waitKey(1) & 0xFF == ord('q'):
             #    break
-        f.write("frames: "+str(frames)+"\n")
-        for i in range(0,7):
-            s=str(emotion_dict[i])+": "+str(l_emotion[i])+"\n"
-            f.write(str(s))
-        f.write("\n")
-        f.close()
+        #f.write("frames: "+str(frames)+"\n")
+        #for i in range(0,7):
+        #    s=str(emotion_dict[i])+": "+str(l_emotion[i])+"\n"
+        #    f.write(str(s))
+        #f.write("\n")
+        #f.close()
         cap.release()
         cv2.destroyAllWindows()
+    good_frames=l[3]+l[4]-l[0]-l[1]-l[2]-l[5]-l[6]
+    result_ans=round( (good_frames*100)/frames,2 )
+    print("emotions:",result_ans)
+    return result_ans
