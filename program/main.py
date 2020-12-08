@@ -17,7 +17,7 @@ try:
     """
     student_file = open("./students.txt", 'r')
     student_data = student_file.readlines()
-    print(student_data)
+    #print(student_data)
 
 
     if mail+"\n" not in student_data:

@@ -3,6 +3,7 @@ original files/
 .vscode/
 .idea/
 tasks.txt
-components/video/models/yolov3.weights
+program/components/video/models/yolov3.weights
 output/
 student_interview_data/
+program/components/video/Emotion_detection/src/data
