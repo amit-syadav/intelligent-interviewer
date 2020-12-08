@@ -19,23 +19,37 @@ import os
 import pickle
 import sys
 import warnings
+#import main
 
-
-def run_praat_file(m, p):
+def run_praat_file(c,filename):
     """
     p : path to dataset folder
     m : path to file
 
     returns : objects outputed by the praat script
+    
+    sound = filename
+    print("sound",sound)
+    print("c",c)
+    
+    sourcerun = os.path.join(str(local_path),"components","dataset","essen","myspsolution.praat")
+    path = os.path.join( str(parent_path),"student_interview_data","kevalshah90909@gmail")
+    print("path",path)
+    print("sourcerun",sourcerun)
     """
-    sound = p+"\\"+"dataset"+"\\"+"audioFiles"+"\\"+m+".wav"
-    sourcerun = p+"\\"+"dataset"+"\\"+"essen"+"\\"+"myspsolution.praat"
-    path = p+"\\"+"dataset"+"\\"+"audioFiles"+"\\"
-    print(sound)
+    local_path = os.getcwd()
+    parent_path = os.path.dirname(local_path)
+    sound = filename
+    sourcerun = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"myspsolution.praat"
+    path = os.path.join(str(parent_path),"student_interview_data","kevalshah90909@gmail")
+    #print("sound  ",sound)
+    #print("path   ", path)
+    #print("sourcerun", sourcerun)
     assert os.path.isfile(sound), "Wrong path to audio file"
     assert os.path.isfile(sourcerun), "Wrong path to praat script"
     assert os.path.isdir(path), "Wrong path to audio files"
-
+    
+    
     try:
         objects = run_file(sourcerun, -20, 2, 0.3, "yes",
                            sound, path, 80, 400, 0.01, capture_output=True)
@@ -51,85 +65,85 @@ def run_praat_file(m, p):
         z3 = 0
         print("Try again the sound of the audio was not clear")
 
-def myspsyl(m, p):
+def myspsyl(c, filename):
     """
     Detect and count number of syllables
     """
-    z2 = run_praat_file(m, p)
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[0])  # will be the integer number 10
     z4 = float(z2[3])  # will be the floating point number 8.3
     print("number_ of_syllables=", z3)
     return z3
 
-def mysppaus(m, p):
+def mysppaus(c, filename):
     """
     Detect and count number of fillers and pauses
     """
-    z2 = run_praat_file(m, p)
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[1])  # will be the integer number 10
     z4 = float(z2[3])  # will be the floating point number 8.3
     print("number_of_pauses=", z3)
     return z3
 
-def myspsr(m, p):
+def myspsr(c, filename):
     """
     Measure the rate of speech (speed)
     """
-    z2 = run_praat_file(m, p)
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[2])  # will be the integer number 10
     z4 = float(z2[3])  # will be the floating point number 8.3
     print("rate_of_speech=", z3, "# syllables/sec original duration")
     return z3
 
 
-def myspatc(m, p):
+def myspatc(c, filename):
     """
     Measure the articulation (speed)
     """
-    z2 = run_praat_file(m, p)
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[3])  # will be the integer number 10
     z4 = float(z2[3])  # will be the floating point number 8.3
     print("articulation_rate=", z3, "# syllables/sec speaking duration")
     return z3
 
 
-def myspst(m, p):
+def myspst(c, filename):
     """
     Measure speaking time (excl. fillers and pause)
     """
-    z2 = run_praat_file(m, p)
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[3])  # will be the integer number 10
     z4 = float(z2[4])  # will be the floating point number 8.3
     print("speaking_duration=", z4, "# sec only speaking duration without pauses")
     return z4
 
 
-def myspod(m, p):
+def myspod(c, filename):
     """
     Measure total speaking duration (inc. fillers and pauses)
     """
-    z2 = run_praat_file(m, p)
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[3])  # will be the integer number 10
     z4 = float(z2[5])  # will be the floating point number 8.3
     print("original_duration=", z4, "# sec total speaking duration with pauses")
     return z4
 
-def myspbala(m, p):
+def myspbala(c, filename):
     """
     Measure ratio between speaking duration and total speaking duration
     """
-    z2 = run_praat_file(m, p)
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[3])  # will be the integer number 10
     z4 = float(z2[6])  # will be the floating point number 8.3
-    print("balance=", z4, "# ratio (speaking duration)/(original duration)")
+    #print("balance=", z4, "# ratio (speaking duration)/(original duration)")
     return z4
 
-
-def myspf0mean(m, p):
-    """
-    Measure fundamental frequency distribution mean
-    """
-    z2 = run_praat_file(m, p)
+"""
+def myspf0mean(c,filename):
+    
+    #Measure fundamental frequency distribution mean
+    
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[3])  # will be the integer number 10
     z4 = float(z2[7])  # will be the floating point number 8.3
     print("f0_mean=", z4, "# Hz global mean of fundamental frequency distribution")
@@ -137,10 +151,10 @@ def myspf0mean(m, p):
 
 
 def myspf0sd(m, p):
-    """
-    Measure fundamental frequency distribution SD
-    """
-    z2 = run_praat_file(m, p)
+    
+    #Measure fundamental frequency distribution SD
+    
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[3])  # will be the integer number 10
     z4 = float(z2[8])  # will be the floating point number 8.3
     print("f0_SD=", z4,
@@ -149,10 +163,10 @@ def myspf0sd(m, p):
 
 
 def myspf0med(m, p):
-    """
-    Measure fundamental frequency distribution median
-    """
-    z2 = run_praat_file(m, p)
+   
+    #Measure fundamental frequency distribution median
+    
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[3])  # will be the integer number 10
     z4 = float(z2[9])  # will be the floating point number 8.3
     print("f0_MD=", z4, "# Hz global median of fundamental frequency distribution")
@@ -160,20 +174,20 @@ def myspf0med(m, p):
 
 
 def myspf0min(m, p):
-    """
-    Measure fundamental frequency distribution minimum
-    """
-    z2 = run_praat_file(m, p)
+    
+    #Measure fundamental frequency distribution minimum
+    
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[10])  # will be the integer number 10
     z4 = float(z2[10])  # will be the floating point number 8.3
     print("f0_min=", z3, "# Hz global minimum of fundamental frequency distribution")
     return z3
 
 def myspf0max(m, p):
-    """
-    Measure fundamental frequency distribution maximum
-    """
-    z2 = run_praat_file(m, p)
+   
+    #Measure fundamental frequency distribution maximum
+    
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[11])  # will be the integer number 10
     z4 = float(z2[11])  # will be the floating point number 8.3
     print("f0_max=", z3, "# Hz global maximum of fundamental frequency distribution")
@@ -181,10 +195,10 @@ def myspf0max(m, p):
 
 
 def myspf0q25(m, p):
-    """
-    Measure 25th quantile fundamental frequency distribution
-    """
-    z2 = run_praat_file(m, p)
+    
+   # Measure 25th quantile fundamental frequency distribution
+    
+    z2 = run_praat_file(c, filename)
     z3 = int(z2[12])  # will be the integer number 10
     z4 = float(z2[11])  # will be the floating point number 8.3
     print("f0_quan25=", z3,
@@ -193,26 +207,25 @@ def myspf0q25(m, p):
 
 
 def myspf0q75(m, p):
-    """
-    Measure 75th quantile fundamental frequency distribution
-    """
+    
+   # Measure 75th quantile fundamental frequency distribution
+  
     z2 = run_praat_file(m, p)
     z3 = int(z2[13])  # will be the integer number 10
     z4 = float(z2[11])  # will be the floating point number 8.3
     print("f0_quan75=", z3,
           "# Hz global 75th quantile of fundamental frequency distribution")
     return z3
+"""
 
-
-def mysptotal(m, p):
+def mysptotal(c, filename):
     """
     Overview
     """
-    z2 = run_praat_file(m, p)
+    z2 = run_praat_file(c, filename)
     z3 = np.array(z2)
     z4 = np.array(z3)[np.newaxis]
     z5 = z4.T
-    print(z5)
     dataset = pd.DataFrame({"number_ of_syllables": z5[0, :], "number_of_pauses": z5[1, :], "rate_of_speech": z5[2, :], "articulation_rate": z5[3, :], "speaking_duration": z5[4, :],
                         "original_duration": z5[5, :], "balance": z5[6, :], "f0_mean": z5[7, :], "f0_std": z5[8, :], "f0_median": z5[9, :], "f0_min": z5[10, :], "f0_max": z5[11, :],
                         "f0_quantile25": z5[12, :], "f0_quan75": z5[13, :]})
@@ -220,14 +233,23 @@ def mysptotal(m, p):
     return dataset.T
 
 
-def mysppron(m, p):
+def mysppron(c, filename):
     """
     Pronunciation posteriori probability score percentage
+    in pronunciation quality evaluation, it is important to calculate the similarity between standard pronunciation and practical pronunciation. The posterior probability is the most stable and efficient for similarity measures.
+    
+    
+    
     """
 
-    sound = p+"/"+"dataset"+"/"+"audioFiles"+"/"+m+".wav"
-    sourcerun = p+"/"+"dataset"+"/"+"essen"+"/"+"myspsolution.praat"
-    path = p+"/"+"dataset"+"/"+"audioFiles"+"/"
+    sound = filename
+    sourcerun = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"myspsolution.praat"
+    local_path = os.getcwd()
+    parent_path = os.path.dirname(local_path)
+    print(parent_path)
+    c = os.path.join( str(parent_path),"student_interview_data","kevalshah90909@gmail")
+    path = c
+    
     try:
         objects = run_file(sourcerun, -20, 2, 0.3, "yes",
                            sound, path, 80, 400, 0.01, capture_output=True)
@@ -241,17 +263,23 @@ def mysppron(m, p):
         db = binom.rvs(n=10, p=z4, size=10000)
         a = np.array(db)
         b = np.mean(a)*100/10
-        print("Pronunciation_posteriori_probability_score_percentage= :%.2f" % (b))
+        #print("Pronunciation_posteriori_probability_score_percentage= :%.2f" % (b))
     except:
         print("Try again the sound of the audio was not clear")
-    return
-def myspgend(m, p):
+        return -1
+    return b
+def myspgend(c, filename):
     """
     Gender recognition and mood of speech
     """
-    sound = p+"/"+"dataset"+"/"+"audioFiles"+"/"+m+".wav"
-    sourcerun = p+"/"+"dataset"+"/"+"essen"+"/"+"myspsolution.praat"
-    path = p+"/"+"dataset"+"/"+"audioFiles"+"/"
+    sound = filename
+    sourcerun = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"myspsolution.praat"
+    local_path = os.getcwd()
+    parent_path = os.path.dirname(local_path)
+    print(parent_path)
+    c = os.path.join( str(parent_path),"student_interview_data","kevalshah90909@gmail")
+    path = c
+    
     try:
         objects = run_file(sourcerun, -20, 2, 0.3, "yes",
                            sound, path, 80, 400, 0.01, capture_output=True)
@@ -295,6 +323,7 @@ def myspgend(m, p):
             return y
         nn = 0
         mm = teset(g, j, z4, z3)
+        s= ""
         while (mm[3] > 0.05 and mm[0] > 0.04 or nn < 5):
             mm = teset(g, j, z4, z3)
             nn = nn+1
@@ -304,39 +333,57 @@ def myspgend(m, p):
         else:
             mmm = 0.35
         if z4 > 97 and z4 <= 114:
-            print(
-                "a Male, mood of speech: Showing no emotion, normal, p-value/sample size= :%.2f" % (mmm), (nnn))
+            s+="a Male, mood of speech: Showing no emotion, normal"
+            number = (mmm)/nnn
+            #print(
+             #   "a Male, mood of speech: Showing no emotion, normal, p-value/sample size= :%.2f" % (mmm), (nnn))
         elif z4 > 114 and z4 <= 135:
-            print(
-                "a Male, mood of speech: Reading, p-value/sample size= :%.2f" % (mmm), (nnn))
+            s+="a Male, mood of speech: Reading "
+            number = (mmm)/(nnn)
+            #print(
+             #   "a Male, mood of speech: Reading, p-value/sample size= :%.2f" % (mmm), (nnn))
         elif z4 > 135 and z4 <= 163:
-            print(
-                "a Male, mood of speech: speaking passionately, p-value/sample size= :%.2f" % (mmm), (nnn))
+            s+="a Male, mood of speech: speaking passionately"
+            number = (mmm)/(nnn)
+            #print(
+             #   "a Male, mood of speech: speaking passionately, p-value/sample size= :%.2f" % (mmm), (nnn))
         elif z4 > 163 and z4 <= 197:
-            print("a female, mood of speech: Showing no emotion, normal, p-value/sample size= :%.2f" % (mmm), (nnn))
+            s+="a female, mood of speech: Showing no emotion, normal"
+            number = (mmm)/(nnn)
+            #print("a female, mood of speech: Showing no emotion, normal, p-value/sample size= :%.2f" % (mmm), (nnn))
         elif z4 > 197 and z4 <= 226:
-            print(
-                "a female, mood of speech: Reading, p-value/sample size= :%.2f" % (mmm), (nnn))
+            s+="a female, mood of speech: Reading"
+            number = (mmm)/(nnn)
+            #print(
+             #   "a female, mood of speech: Reading, p-value/sample size= :%.2f" % (mmm), (nnn))
         elif z4 > 226 and z4 <= 245:
-            print(
-                "a female, mood of speech: speaking passionately, p-value/sample size= :%.2f" % (mmm), (nnn))
+            s+="a female, mood of speech: speaking passionately"
+            number = (mmm)/(nnn)
+            #print(
+             #   "a female, mood of speech: speaking passionately, p-value/sample size= :%.2f" % (mmm), (nnn))
         else:
-            print("Voice not recognized")
+            s+="Voice not recognized"
+            number = 0
+            #print("Voice not recognized")
     except:
-        print("Try again the sound of the audio was not clear")
+        s+="Try again the sound of the audio was not clear"
+        number = -1
+        
+        #print("Try again the sound of the audio was not clear")
+    return s
 
-def myprosody(m, p):
+def myprosody(c, filename):
     """
     Compared to native speech, here are the prosodic features of your speech
     """
-    sound = p+"/"+"dataset"+"/"+"audioFiles"+"/"+m+".wav"
-    sourcerun = p+"/"+"dataset"+"/"+"essen"+"/"+"MLTRNL.praat"
-    path = p+"/"+"dataset"+"/"+"audioFiles"+"/"
-    outo = p+"/"+"dataset"+"/"+"datanewchi22.csv"
-    outst = p+"/"+"dataset"+"/"+"datanewchi44.csv"
-    outsy = p+"/"+"dataset"+"/"+"datanewchi33.csv"
-    pa2 = p+"/"+"dataset"+"/"+"stats.csv"
-    pa7 = p+"/"+"dataset"+"/"+"datanewchi44.csv"
+    sound = filename
+    sourcerun = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"MLTRNL.praat"
+    path = c+"\\"+"dataset"+"\\"+"audioFiles"+"\\"
+    outo = c+"\\"+"dataset"+"\\"+"datanewchi22.csv"
+    outst = c+"\\"+"dataset"+"\\"+"datanewchi44.csv"
+    outsy = c+"\\"+"dataset"+"\\"+"datanewchi33.csv"
+    pa2 = c+"\\"+"dataset"+"\\"+"stats.csv"
+    pa7 = c+"\\"+"dataset"+"\\"+"datanewchi44.csv"
     result_array = np.empty((0, 100))
     files = glob.glob(path)
     result_array = np.empty((0, 27))
@@ -391,7 +438,7 @@ def myprosody(m, p):
         print("Try again the sound of the audio was not clear")
 
 
-def mysplev(m, p):
+def mysplev(c, filename):
     """
     Spoken Language Proficiency Level estimator,
     based on Machine Learning models of the prosodic features of your speech
@@ -401,12 +448,12 @@ def mysplev(m, p):
     sys.excepthook = my_except_hook
     if not sys.warnoptions:
         warnings.simplefilter("ignore")
-    sound = p+"/"+"dataset"+"/"+"audioFiles"+"/"+m+".wav"
-    sourcerun = p+"/"+"dataset"+"/"+"essen"+"/"+"MLTRNL.praat"
-    path = p+"/"+"dataset"+"/"+"audioFiles"+"/"
-    pa1 = p+"/"+"dataset"+"/"+"datanewchi23.csv"
-    pa7 = p+"/"+"dataset"+"/"+"datanewchi45.csv"
-    pa5 = p+"/"+"dataset"+"/"+"datanewchi34.csv"
+    sound = filename
+    sourcerun = c+"/"+"dataset"+"\\"+"essen"+"\\"+"MLTRNL.praat"
+    path = c+"\\"+"dataset"+"\\"+"audioFiles"+"/"
+    pa1 = c+"\\"+"dataset"+"\\"+"datanewchi23.csv"
+    pa7 = c+"\\"+"dataset"+"\\"+"datanewchi45.csv"
+    pa5 = c+"\\"+"dataset"+"\\"+"datanewchi34.csv"
     result_array = np.empty((0, 100))
     ph = sound
     files = glob.glob(ph)
@@ -441,7 +488,7 @@ def mysplev(m, p):
         x = array[:, 0:13]
     
         def myspp(bp, bg):
-            sound = bg+"/"+"dataset"+"/"+"audioFiles"+"/"+bp+".wav"
+            sound = bp
             sourcerun = bg+"/"+"dataset"+"/"+"essen"+"/"+"myspsolution.praat"
             path = bg+"/"+"dataset"+"/"+"audioFiles"+"/"
             objects = run_file(sourcerun, -20, 2, 0.3, "yes",sound,path, 80, 400, 0.01, capture_output=True)
@@ -455,42 +502,47 @@ def mysplev(m, p):
             b = np.mean(a)*100/10
             return b
     
-        bp = m
-        bg = p
+        bp = filename
+        bg = c
         bi = myspp(bp,bg)
         if bi <85:
             input(
                  "Try again, unnatural-sounding speech detected. No further result. Press any key to exit.")
             exit()
-        filename = p+"/"+"dataset"+"/"+"essen"+"/"+"CART_model.sav"
+        filename = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"CART_model.sav"
         model = pickle.load(open(filename, 'rb'))
         predictions = model.predict(x)
-        print("58% accuracy    ", predictions)
+        #print("58% accuracy    ", predictions)
+        val = 58
+        return val
     
-        filename = p+"/"+"dataset"+"/"+"essen"+"/"+"KNN_model.sav"
+        filename = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"KNN_model.sav"
         model = pickle.load(open(filename, 'rb'))
         predictions = model.predict(x)
-        print("65% accuracy    ", predictions)
-    
-        filename = p+"/"+"dataset"+"/"+"essen"+"/"+"LDA_model.sav"
+        #print("65% accuracy    ", predictions)
+        return 65
+        filename = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"LDA_model.sav"
         model = pickle.load(open(filename, 'rb'))
         predictions = model.predict(x)
-        print("70% accuracy    ", predictions)
-    
-        filename = p+"/"+"dataset"+"/"+"essen"+"/"+"LR_model.sav"
+        #print("70% accuracy    ", predictions)
+        return 70
+        filename = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"LR_model.sav"
         model = pickle.load(open(filename, 'rb'))
         predictions = model.predict(x)
-        print("67% accuracy    ", predictions)
-    
-        filename = p+"/"+"dataset"+"/"+"essen"+"/"+"NB_model.sav"
+        #print("67% accuracy    ", predictions)
+        return 67
+        filename = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"NB_model.sav"
         model = pickle.load(open(filename, 'rb'))
         predictions = model.predict(x)
-        print("64% accuracy    ", predictions)
-    
-        filename = p+"/"+"dataset"+"/"+"essen"+"/"+"SVN_model.sav"
+        #print("64% accuracy    ", predictions)
+        return 64
+        filename = c+"\\"+"dataset"+"\\"+"essen"+"\\"+"SVN_model.sav"
         model = pickle.load(open(filename, 'rb'))
         predictions = model.predict(x)
-        print("63% accuracy    ", predictions)
+        #print("63% accuracy    ", predictions)
+        return 63
     except:
         print("Try again the sound of the audio was not clear")
+        return -1
 
+    
