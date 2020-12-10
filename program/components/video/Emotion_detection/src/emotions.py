@@ -149,7 +149,7 @@ def emotions_f(filename):
         #f.close()
         cap.release()
         cv2.destroyAllWindows()
-    good_frames=l_emotion[3]+l_emotion[4]-l_emotion[0]-l_emotion[1]-l_emotion[2]-l_emotion[5]-l_emotion[6]
-    result_ans=round( (good_frames*100)/frames,2 )
-    print("emotions:",result_ans)
-    return result_ans
+    good_emotions=l_emotion[3]+l_emotion[4]+l_emotion[6]
+    bad_emotions=l_emotion[0]+l_emotion[1]+l_emotion[2]+l_emotion[5]
+    print("positive emotions:",good_emotions,"negative emotions:",bad_emotions)
+    return int(good_emotions),int(bad_emotions)

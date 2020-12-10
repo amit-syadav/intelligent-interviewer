@@ -1,0 +1,8 @@
+Student was not facing the interviewer for eye tracker 20.0 % of time
+Spoofed frames 13.0 % of time
+Student was NOT facing the interviewer for head pose 7.0 % of time
+Pronunciation_posteriori_probability_score_percentage 65.39680000000001 %
+balance 0.6599999999999999 (speaking duration)/(original duration)
+Gender and emotion of the interviee is a Male, mood of speech: speaking passionately
+accuracy of the interviee is 58 %
+technical analysis of the interviee is [1.5] marks out of 5
