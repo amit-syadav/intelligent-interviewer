@@ -9,7 +9,7 @@ from components.video.Emotion_detection.src import emotions
 from collections import Counter
 import result_creation
 import mail_sender_code
-#import main
+import main
 def evaluate_video(path,result):
     result["eye_tracker"].append(eye_tracker.eye_tracker_f(path))
     result["face_spoofing"].append(face_spoofing.face_spoofing_f(path))
@@ -156,4 +156,4 @@ def combine_f(candidate="kevalshah90909@gmail"):
         json.dump(avg_result, f, ensure_ascii=False, indent=4)
     return avg_result
 #combine_f(student_folder_directory)
-combine_f()
+combine_f(student_folder_directory)
