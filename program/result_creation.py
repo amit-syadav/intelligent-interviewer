@@ -24,6 +24,8 @@ def result_creation_f(result,email):
     f.write(string)
     string = "technical analysis of the interviee is "+str(result["text"])+ " marks out of 5" + "\n"
     f.write(string)
+    string="Technical Mcq correctly answerd:-"+str(result["mcq"])+"\n"
+    f.write(string)
     string= "Student was "+str(result["person_phone"][0])+ " phone \n"
     f.write(string)
     if(result["person_phone"][1]>1):

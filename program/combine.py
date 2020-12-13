@@ -10,6 +10,7 @@ from collections import Counter
 import result_creation
 import mail_sender_code
 import main
+import mcq
 def evaluate_video(path,result):
     result["eye_tracker"].append(eye_tracker.eye_tracker_f(path))
     result["face_spoofing"].append(face_spoofing.face_spoofing_f(path))
@@ -30,8 +31,10 @@ def combine_f(candidate="kevalshah90909@gmail"):
         "emotions":[],
         "text":[],
         "audio":[[],[],[],[]],
-        "person_phone":[]
+        "person_phone":[],
+        "mcq":0
     }
+    result["mcq"]=mcq.coding_mcq()
     local_path = os.getcwd()
     parent_path = os.path.dirname(local_path)
     #print(parent_path)
@@ -62,7 +65,8 @@ def combine_f(candidate="kevalshah90909@gmail"):
         "emotions":[],
         "text":0,
         "audio":[[],[],[],[]],
-        "person_phone":[]
+        "person_phone":[],
+        "mcq":0
     }
 
 
@@ -148,6 +152,7 @@ def combine_f(candidate="kevalshah90909@gmail"):
     avg_result["text"]=result["text"] 
     avg_result["person_phone"].append(phone_detected)
     avg_result["person_phone"].append(person_count)
+    avg_result["mcq"]=result["mcq"]
     print(avg_result)
     result_creation.result_creation_f(avg_result,candidate)
     mail_sender_code.mail_sender_f(candidate)
