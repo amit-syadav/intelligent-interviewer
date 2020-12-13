@@ -324,7 +324,7 @@ def weights_download(out='models/yolov3.weights'):
 # weights_download() # to download weights
 def p_and_p_f(filename):
     yolo = YoloV3()
-    load_darknet_weights(yolo, 'models/yolov3.weights') 
+    load_darknet_weights(yolo, 'components/video/models/yolov3.weights') 
 
     #local_path = os.getcwd()
     #parent_path = os.path.dirname(local_path)
@@ -349,7 +349,7 @@ def p_and_p_f(filename):
         img = img.astype(np.float32)
         img = np.expand_dims(img, 0)
         img = img / 255
-        class_names = [c.strip() for c in open("models/classes.TXT").readlines()]
+        class_names = [c.strip() for c in open("components/video/models/classes.TXT").readlines()]
         boxes, scores, classes, nums = yolo(img)
         count=0
         for i in range(nums[0]):
@@ -372,5 +372,5 @@ def p_and_p_f(filename):
     print("Count of mobile phones",mobile_phone)
     cap.release()
     cv2.destroyAllWindows()
-    return mobile_phone
+    return mobile_phone,count
 #p_and_p_f()

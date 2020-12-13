@@ -24,6 +24,11 @@ def result_creation_f(result,email):
     f.write(string)
     string = "technical analysis of the interviee is "+str(result["text"])+ " marks out of 5" + "\n"
     f.write(string)
+    string= "Student was "+str(result["person_phone"][0])+ " phone \n"
+    f.write(string)
+    if(result["person_phone"][1]>1):
+        stirng="Number of person in the interview is "+str(result["person_phone"][1])+"\n"
+        f.write(string)
 
 
     from fpdf import FPDF 

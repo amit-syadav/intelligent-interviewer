@@ -16,6 +16,7 @@ def evaluate_video(path,result):
     result["head_pose"].append(head_pose_estimation.head_pose_estimation_f(path))
     result["mouth_distance"].append(mouth_distance.mouth_distance_f(path))
     result["emotions"].append((list(emotions.emotions_f(path))))
+    result["person_phone"].append((list(person_and_phone.p_and_p_f(path))))
     print(result)
 
 def combine_f(candidate="kevalshah90909@gmail"):
@@ -28,7 +29,8 @@ def combine_f(candidate="kevalshah90909@gmail"):
         "mouth_distance":[],
         "emotions":[],
         "text":[],
-        "audio":[[],[],[],[]]
+        "audio":[[],[],[],[]],
+        "person_phone":[]
     }
     local_path = os.getcwd()
     parent_path = os.path.dirname(local_path)
@@ -51,12 +53,7 @@ def combine_f(candidate="kevalshah90909@gmail"):
         result["audio"][3].append(acc_value)
         if(q_id in l_questions_text):
            result["text"].append(text_main.text_analysis(c+str(q_id)+"_answering.wav"))
-    #c=c+"result.json"
-    #print(c)
-    #res=open(c,"r")
-    #result=json.load(res)
-    #with open(c+'result.json', 'w', encoding='utf-8') as f:
-    #    json.dump(result, f, ensure_ascii=False, indent=4)
+    
     avg_result={
         "eye_tracker":0,
         "face_spoofing":0,
@@ -64,8 +61,11 @@ def combine_f(candidate="kevalshah90909@gmail"):
         "mouth_distance":0,
         "emotions":[],
         "text":0,
-        "audio":[[],[],[],[]]
+        "audio":[[],[],[],[]],
+        "person_phone":[]
     }
+
+
     eye_tracker_avg=0
     eye_tracker_count=0
     face_spoofing_avg=0
@@ -84,6 +84,8 @@ def combine_f(candidate="kevalshah90909@gmail"):
     accuracy_avg=0
     accuracy_count=0
     audio_gender=""
+    person_count=0
+    phone_detected="not using"
     for i in result:
         if(i=="eye_tracker"):
             for j in result[i]:
@@ -111,6 +113,13 @@ def combine_f(candidate="kevalshah90909@gmail"):
                 postive_emotions_avg=j[0]+postive_emotions_avg
                 negative_emotions_avg=j[1]+negative_emotions_avg
                 emtions_count+=1
+        elif(i=="person_phone"):
+            for j in result["person_phone"]:
+                #print(len(j))
+                if(j[0]>0):
+                    phone_detected="using"
+                if(j[1]>person_count):
+                    person_count=j[1]
         elif(i=="audio"):
             counter1=Counter(result[i][0])
             audio_gender=counter1.most_common(1)[0][0]
@@ -137,7 +146,8 @@ def combine_f(candidate="kevalshah90909@gmail"):
     avg_result["audio"][2]=pron_avg/pron_count
     avg_result["audio"][3]=accuracy_avg//accuracy_count  
     avg_result["text"]=result["text"] 
-
+    avg_result["person_phone"].append(phone_detected)
+    avg_result["person_phone"].append(person_count)
     print(avg_result)
     result_creation.result_creation_f(avg_result,candidate)
     mail_sender_code.mail_sender_f(candidate)
