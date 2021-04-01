@@ -6,9 +6,9 @@ Created on Sun Dec 13 15:12:15 2020
 """
 
 def coding_mcq():
-    print("Now you will have your Mutltiple choice question test")
+    print("Now you will have your Multiple choice question test")
     print("Each question will have 4 answers and you have to select one ")
-    print("Here are your questions")
+    print("Here are your questions\n")
     
     count = 0
     ans1 = input("With what data structure can a priority queue be implemented?\n"\
@@ -16,7 +16,7 @@ def coding_mcq():
           "b) List\n"\
           "c) Heap\n"\
           "d) Tree\n")
-    if ans1.lower() == "d":
+    if ans1.lower() == "c":
         count+=1
     ans2 = input("Architecture of database is viewed as?\n"\
           "a) two level\n"\
@@ -36,7 +36,7 @@ def coding_mcq():
     
     ans4 = input(" Study the following program:\n"\
                  "x = ['xy', 'yz']\n"\
-                 "for i in a: \n" \
+                 "for i in x: \n" \
                      "\ti.upper()\n" \
                   "print(a)\n"\
                   "options\n"\
@@ -47,14 +47,14 @@ def coding_mcq():
                  )
     
         
-    if ans4.lower() == "a":
+    if ans4.lower() == "b":
         count+=1
     
     ans5 = input("Which of the following requires a device driver?\n"\
                  "a) Register\n"\
                  "b) Cache\n"\
                  "c) Main memory\n"\
-                 "d) Disk\nd"
+                 "d) Disk\n"
                  )
     if ans5.lower() == "d":
         count+=1
@@ -64,3 +64,4 @@ def coding_mcq():
     return count
 
     
+coding_mcq()
