@@ -8,3 +8,4 @@ output/
 program/data.txt
 student_interview_data/
 program/__pycache__/
+gui/__pycache__/
