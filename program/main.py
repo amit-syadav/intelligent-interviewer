@@ -31,6 +31,9 @@ try:
     # print(" directory name ", student_folder_directory)
     # create_directory(student_folder_directory)
     
+    print("\nHello "+ mail)
+
+    time.sleep(2)
 
     welcome_speech = """
     I am 'robo', your AI interviewer
@@ -40,44 +43,41 @@ try:
     You will get your report on your mail
     BEST OF LUCK
     """
-
-    print("\nHello "+ mail)
-
-    time.sleep(2)
-
     print(welcome_speech)
+    
+    print("increase time to 15secs")
+    time.sleep(5)
+    
 
-    time.sleep(15)
 
-    questions = open(r"./questions.json", 'r')
+    questions = open(r"./questions_testing.json", 'r')
+    # replace the testing file with originial for production and vice versa
 
     """
     read question and allocated time then run a loop to capture video and save it
     """
     student_folder_directory = mail.split(".")[0]
-    print(" directory name ", student_folder_directory)
+    # print(" directory name ", student_folder_directory)
     create_directory(student_folder_directory)
 
     q = json.load(questions)
     for q_id in q:
         # print (q[q_id]['time'], q[q_id]['text'])
-        print("YOU ARE BEING PROCTORED FOR READING- DON'T PERFORM ANY SUSPICIOUS ACTIVITY")
-
+        print("YOU  WILL BE PROCTORED FOR READING- DON'T PERFORM ANY SUSPICIOUS ACTIVITY\n".title())
         time.sleep(2)
+        
+        # question print
+        print("\n",q[q_id]["text"]+"\n")
 
-        print(q[q_id]["text"])
-        run(q_id+ "_reading",  15, student_folder_directory)
+        print("on production increase question read time to 15s")
+        run(q_id+ "_reading",student_folder_directory, 5 )
+        time.sleep(2)
 
         print("YOU ARE BEING PROCTORED FOR ANSWERING")
-
         time.sleep(2)
 
-        run(q_id+ "_answering", q[q_id]['time'],student_folder_directory)
-
-
-    # for 
-    # print(questions.readline)
-
+        run(q_id+ "_answering", student_folder_directory, q[q_id]['time'])
+        time.sleep(2)
 
     
 

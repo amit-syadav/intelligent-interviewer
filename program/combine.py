@@ -1,3 +1,5 @@
+# import main
+import mcq
 import os
 import json
 from components.video import eye_tracker,face_spoofing,head_pose_estimation
@@ -9,8 +11,8 @@ from components.video.Emotion_detection.src import emotions
 from collections import Counter
 import result_creation
 import mail_sender_code
-import main
-import mcq
+
+
 def evaluate_video(path,result):
     result["eye_tracker"].append(eye_tracker.eye_tracker_f(path))
     result["face_spoofing"].append(face_spoofing.face_spoofing_f(path))
@@ -20,7 +22,7 @@ def evaluate_video(path,result):
     result["person_phone"].append((list(person_and_phone.p_and_p_f(path))))
     print(result)
 
-def combine_f(candidate="kevalshah90909@gmail"):
+def combine_f(candidate="amitsyadav1999@gmail"):
     global email
     email=candidate
     result={
@@ -34,6 +36,8 @@ def combine_f(candidate="kevalshah90909@gmail"):
         "person_phone":[],
         "mcq":0
     }
+
+    # taking mcq test now
     result["mcq"]=mcq.coding_mcq()
     local_path = os.getcwd()
     parent_path = os.path.dirname(local_path)
@@ -41,7 +45,8 @@ def combine_f(candidate="kevalshah90909@gmail"):
     c = os.path.join(str(parent_path),"student_interview_data",candidate)
     c=c+"\\"
     print("printing c"+c)
-    questions = open(r"./questions.json", 'r')
+    print("change here question testing file to real questions")
+    questions = open(r"./questions_testing.json", 'r')
     q=json.load(questions)
     l_questions_text=["4"]
     for q_id in q:
@@ -160,5 +165,5 @@ def combine_f(candidate="kevalshah90909@gmail"):
     with open(c+'result.json', 'w', encoding='utf-8') as f:
         json.dump(avg_result, f, ensure_ascii=False, indent=4)
     return avg_result
-#combine_f(student_folder_directory)
-combine_f(student_folder_directory)
+combine_f() # for testing
+# combine_f(main.student_folder_directory) # for actual production uncomment this

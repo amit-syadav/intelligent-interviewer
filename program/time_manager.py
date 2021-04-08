@@ -5,6 +5,7 @@ import threading
 import time
 import subprocess
 import os
+import shutil
 
 class VideoRecorder():  
 
@@ -211,17 +212,17 @@ def stop_AVrecording(filename):
 
 
 def this_student_directory_create(this_student_folder):
-	local_path = os.getcwd()
+	local_path = os.getcwd() #replace by os.path.realpath
 	parent_path = os.path.dirname(local_path)
 	data_folder = os.path.join( str(parent_path) ,"student_interview_data") 
 
 	# check for student_interview_data folder
 
 	if not os.path.exists(os.path.join(data_folder, this_student_folder) ):
-		print("No THIS student directory found.. so creating STUDENT SPECIFIC FOLDER")
+		print("THIS student directory NOT found.. so creating STUDENT SPECIFIC FOLDER")
 		os.mkdir(os.path.join(data_folder, this_student_folder) )
-	print(os.path.exists(os.path.join(data_folder, this_student_folder) ))
-	print(os.path.join(data_folder, this_student_folder) )
+	# print(os.path.exists(os.path.join(data_folder, this_student_folder) ))
+	# print(os.path.join(data_folder, this_student_folder) )
 
 
 def create_directory(student_folder):
@@ -235,10 +236,10 @@ def create_directory(student_folder):
 		# print((os.path.join( str(parent_path) ,"student_interview_data") ))
 		# print(os.getcwd())
 		os.mkdir(os.path.join( str(parent_path) ,"student_interview_data"),0o777 )
-	# else:
-	# 	os.remove( os.path.join( str(parent_path) ,"student_interview_data") )
-	# 	print("directory already existes so deleted")
-	# 	os.mkdir(os.path.join( str(parent_path) ,"student_interview_data"),0o777 )
+	else:
+		shutil.rmtree( os.path.join( str(parent_path) ,"student_interview_data") )
+		print("directory already existes so deleted")
+		os.mkdir(os.path.join( str(parent_path) ,"student_interview_data"),0o777 )
 
 
 
@@ -268,8 +269,8 @@ def file_manager(filename, student_folder):
 
 this_student_folder = ""
 
-def run(filename, duration, studentFolder):
 
+def run(filename, studentFolder, duration=15):
 	global this_student_folder
 	this_student_directory_create(studentFolder)
 
@@ -289,6 +290,6 @@ def run(filename, duration, studentFolder):
 		duration -= 1
 		
 	stop_AVrecording(filename)
-	print ("Done")
+	print ("\n Done \n")
 
 # run("q1_read",3)

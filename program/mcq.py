@@ -62,6 +62,3 @@ def coding_mcq():
     
     print(count)
     return count
-
-    
-coding_mcq()

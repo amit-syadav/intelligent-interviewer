@@ -339,6 +339,7 @@ def p_and_p_f(filename):
 
     frames = 0
     mobile_phone = 0
+    count = 0
     while(True):
         frames += 1
         ret, image = cap.read()
