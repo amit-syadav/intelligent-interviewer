@@ -7,4 +7,4 @@ program/components/video/models/yolov3.weights
 output/
 program/data.txt
 student_interview_data/
-__pycache__/
+program/__pycache__/

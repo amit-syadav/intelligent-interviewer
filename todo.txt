@@ -1,1 +1,7 @@
 are we evaluating same things for ques and ans? ie. mouth distance for only reading no answering
+
+file system not independent - files location depend on directory of run
+
+see text generated to check if its correct to show transparency
+
+replace os.getcwd by os.path.realpath
