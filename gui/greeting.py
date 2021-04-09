@@ -3,6 +3,7 @@ from tkinter import ttk
 
 import startPage
 
+
 LARGEFONT =("Verdana", 35)
 
 # second window frame page1
@@ -14,6 +15,17 @@ class Greeting(tk.Frame):
         label = ttk.Label(self, text ="Welcome", font = LARGEFONT)
         label.grid(row = 0, column = 4, padx = 10, pady = 10)
 
+        welcome_speech = """
+        I am 'robo', your AI interviewer
+        I will ask you questions and you will have 15secs to read each question
+        After which you will have to answer in given stipulated time
+        I will judge you on the basis of soft skills and hard skills
+        You will get your report on your mail
+        BEST OF LUCK
+        """
+        label = ttk.Label(self, text =welcome_speech, font = LARGEFONT)
+        label.grid(row = 1, column = 4, padx = 10, pady = 10)
+
         # button to show frame 2 with text
         # layout2
         button1 = ttk.Button(self, text ="StartPage",
@@ -21,8 +33,11 @@ class Greeting(tk.Frame):
     
         # putting the button in its place
         # by using grid
-        button1.grid(row = 1, column = 1, padx = 10, pady = 10)
+        button1.grid(row = 2, column = 1, padx = 10, pady = 10)
 
+# import helper.checker as chk
+# app =chk.Checker(Greeting)
+# app.mainloop()
 
 
 

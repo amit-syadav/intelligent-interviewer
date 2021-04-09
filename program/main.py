@@ -63,7 +63,7 @@ try:
     q = json.load(questions)
     for q_id in q:
         # print (q[q_id]['time'], q[q_id]['text'])
-        print("YOU  WILL BE PROCTORED FOR READING- DON'T PERFORM ANY SUSPICIOUS ACTIVITY\n".title())
+        print("You  Will Be Proctored For Reading- Don'T Perform Any Suspicious Activity")
         time.sleep(2)
         
         # question print
