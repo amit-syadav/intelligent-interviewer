@@ -214,71 +214,83 @@ def stop_AVrecording(filename):
 def this_student_directory_create(this_student_folder):
 	local_path = os.getcwd() #replace by os.path.realpath
 	parent_path = os.path.dirname(local_path)
-	data_folder = os.path.join( str(parent_path) ,"student_interview_data") 
+	data_folder = os.path.join( str(parent_path) ,"student_interview_data")
+	this_student_directory =  os.path.join(data_folder, this_student_folder)
 
 	# check for student_interview_data folder
 
-	if not os.path.exists(os.path.join(data_folder, this_student_folder) ):
+	if not os.path.exists( this_student_directory ):
 		print("THIS student directory NOT found.. so creating STUDENT SPECIFIC FOLDER")
-		os.mkdir(os.path.join(data_folder, this_student_folder) )
+		os.mkdir(  this_student_directory )
 	# print(os.path.exists(os.path.join(data_folder, this_student_folder) ))
 	# print(os.path.join(data_folder, this_student_folder) )
+	
+	else:
+		shutil.rmtree( this_student_directory )
+		print("this student specifuc directory already existes so deleted")
+		os.mkdir(this_student_directory )
+	return  this_student_directory
+
 
 
 def create_directory(student_folder):
 	local_path = os.getcwd()
 	parent_path = os.path.dirname(local_path)
+	student_directory_path = os.path.join( str(parent_path) ,"student_interview_data")
 
 	# check for student_interview_data folder
 
-	if not os.path.exists(os.path.join( str(parent_path) ,"student_interview_data") ):
-		print("No student directory found.. so creating")
+	if not os.path.exists(student_directory_path ):
+		print("No student directory file system found.. so creating")
 		# print((os.path.join( str(parent_path) ,"student_interview_data") ))
 		# print(os.getcwd())
-		os.mkdir(os.path.join( str(parent_path) ,"student_interview_data"),0o777 )
+		os.mkdir(student_directory_path )
 	else:
-		shutil.rmtree( os.path.join( str(parent_path) ,"student_interview_data") )
-		print("directory already existes so deleted")
-		os.mkdir(os.path.join( str(parent_path) ,"student_interview_data"),0o777 )
+		print("\n student directory file system found \n")
+
+		return student_directory_path
+
+		# NO NEED TO DELETE IF ITS EXISTS
 
 
 
 
 	# Required and wanted processing of final files
-def file_manager(filename, student_folder):
+# def file_manager(filename, student_folder):
 
-	local_path = os.getcwd()
+# 	local_path = os.getcwd()
 
 	
+# 	if os.path.exists(str(parent_path) + "/temp_audio.wav"):
+# 		os.remove(str(local_path) + "/temp_audio.wav")
 
-	if os.path.exists(str(parent_path) + "/temp_audio.wav"):
-		os.remove(str(local_path) + "/temp_audio.wav")
+# 	if os.path.exists(str(local_path) + "/temp_audio.wav"):
+# 		os.remove(str(local_path) + "/temp_audio.wav")
 
-	if os.path.exists(str(local_path) + "/temp_audio.wav"):
-		os.remove(str(local_path) + "/temp_audio.wav")
+# 	if os.path.exists(str(local_path) + "/temp_video.avi"):
+# 		os.remove(str(local_path) + "/temp_video.avi")
 
-	if os.path.exists(str(local_path) + "/temp_video.avi"):
-		os.remove(str(local_path) + "/temp_video.avi")
+# 	if os.path.exists(str(local_path) + "/temp_video2.avi"):
+# 		os.remove(str(local_path) + "/temp_video2.avi")
 
-	if os.path.exists(str(local_path) + "/temp_video2.avi"):
-		os.remove(str(local_path) + "/temp_video2.avi")
-
-	if os.path.exists(str(local_path) + "/" + filename + ".avi"):
-		os.remove(str(local_path) + "/" + filename + ".avi")
+# 	if os.path.exists(str(local_path) + "/" + filename + ".avi"):
+# 		os.remove(str(local_path) + "/" + filename + ".avi")
 
 
 this_student_folder = ""
 
 
-def run(filename, studentFolder, duration=15):
+def run(filename, this_student_folder_directory_path, duration=15):
 	global this_student_folder
-	this_student_directory_create(studentFolder)
+	# this_student_directory_create(studentFolder)
 
-	# file_manager(filename)
-	local_path = os.getcwd()
-	parent_path = os.path.dirname(local_path)
-	all_student_data_folder = os.path.join( str( parent_path ), "student_interview_data")
-	this_student_folder = str(os.path.join( str(all_student_data_folder), studentFolder))
+	# # file_manager(filename)
+	# local_path = os.getcwd()
+	# parent_path = os.path.dirname(local_path)
+	# all_student_data_folder = os.path.join( str( parent_path ), "student_interview_data")
+	# this_student_folder = str(os.path.join( str(all_student_data_folder), studentFolder))
+	
+	this_student_folder = this_student_folder_directory_path
 	
 	start_AVrecording(filename)  
 	
