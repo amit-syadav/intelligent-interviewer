@@ -3,7 +3,7 @@
 # genrate and mail report
 import errors
 import json
-from time_manager import run, create_directory
+from time_manager import run, create_directory, this_student_directory_create
 import time
 import os
 
@@ -26,6 +26,12 @@ try:
         raise errors.StudentNotResgistered
 
     time.sleep(1)
+
+    student_folder_directory = mail.split(".")[0]
+    # print(" directory name ", student_folder_directory)
+    student_folder_directory_path = create_directory(student_folder_directory) # general file system of all students
+    this_student_folder_directory_path = this_student_directory_create(student_folder_directory_path) # folder for this specific student
+
 
     # student_folder_directory = mail.split(".")[0]
     # print(" directory name ", student_folder_directory)
@@ -52,13 +58,9 @@ try:
 
     questions = open(r"./questions_testing.json", 'r')
     # replace the testing file with originial for production and vice versa
-
     """
     read question and allocated time then run a loop to capture video and save it
     """
-    student_folder_directory = mail.split(".")[0]
-    # print(" directory name ", student_folder_directory)
-    create_directory(student_folder_directory)
 
     q = json.load(questions)
     for q_id in q:
@@ -70,13 +72,13 @@ try:
         print("\n",q[q_id]["text"]+"\n")
 
         print("on production increase question read time to 15s")
-        run(q_id+ "_reading",student_folder_directory, 5 )
+        run(q_id+ "_reading",this_student_folder_directory_path, 5 )
         time.sleep(2)
 
         print("YOU ARE BEING PROCTORED FOR ANSWERING")
         time.sleep(2)
 
-        run(q_id+ "_answering", student_folder_directory, q[q_id]['time'])
+        run(q_id+ "_answering", this_student_folder_directory_path, q[q_id]['time'])
         time.sleep(2)
 
     

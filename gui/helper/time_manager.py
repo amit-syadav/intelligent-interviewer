@@ -19,7 +19,7 @@ class VideoRecorder():
 		self.fourcc = "MJPG"       # capture images (with no decrease in speed over time; testing is required)
 		self.frameSize = (640,480) # video formats and sizes also depend and vary according to the camera used
 		self.video_filename = str(os.path.join(this_student_folder, filename+".avi"))
-		self.video_cap = cv2.VideoCapture(self.device_index)
+		self.video_cap = cv2.VideoCapture(self.device_index, cv2.CAP_DSHOW)
 		self.video_writer = cv2.VideoWriter_fourcc(*self.fourcc)
 		self.video_out = cv2.VideoWriter(self.video_filename, self.video_writer, self.fps, self.frameSize)
 		self.frame_counts = 1
@@ -45,7 +45,7 @@ class VideoRecorder():
 					# timer_current = time.time() - timer_start
 					time.sleep(0.16)
 					gray = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
-					cv2.imshow('video_frame', gray)
+					# cv2.imshow('video_frame', gray)
 					cv2.waitKey(1)
 			else:
 				break
@@ -212,11 +212,13 @@ def stop_AVrecording(filename):
 
 
 def this_student_directory_create(student_folder_directory_path):
+	global this_student_folder
+
 	# local_path = os.getcwd() #replace by os.path.realpath
 	# parent_path = os.path.dirname(local_path)
 	# data_folder = os.path.join( str(parent_path) ,"student_interview_data")
 	this_student_directory =  os.path.join(student_folder_directory_path, this_student_folder)
-
+	print("this_student_directory",this_student_directory)
 	# check for student_interview_data folder
 
 	if not os.path.exists( this_student_directory ):
@@ -234,9 +236,11 @@ def this_student_directory_create(student_folder_directory_path):
 
 
 def create_directory(student_folder):
-	local_path = os.getcwd()
-	parent_path = os.path.dirname(local_path)
-	student_directory_path = os.path.join( str(parent_path) ,"student_interview_data")
+	global this_student_folder
+	this_student_folder = student_folder #this will be used by other functions
+	local_path = os.path.realpath(__file__)
+	parent_path = os.path.dirname( (os.path.dirname(local_path) ) )
+	student_directory_path = os.path.join( str(parent_path) ,"student_interview_data" )
 
 	# check for student_interview_data folder
 
@@ -245,6 +249,7 @@ def create_directory(student_folder):
 		# print((os.path.join( str(parent_path) ,"student_interview_data") ))
 		# print(os.getcwd())
 		os.mkdir(student_directory_path )
+		print(student_directory_path)
 	else:
 		print("\n student directory file system found \n")
 

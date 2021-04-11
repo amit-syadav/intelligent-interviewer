@@ -19,7 +19,7 @@ class StartPage(tk.Frame):
         label = ttk.Label(self, text ="Intelligent Interviewer System", font = LARGEFONT)
         
         # putting the grid in its place by using
-        # grid
+        # grid 
         label.grid(row = 0, column = 4, padx = 10, pady = 10)
 
         button1 = ttk.Button(self, text ="Login page",

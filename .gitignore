@@ -9,3 +9,7 @@ program/data.txt
 student_interview_data/
 program/__pycache__/
 gui/__pycache__/
+gui/student_interview_data
+gui/__pycache__
+gui/helper/__pycache__
+program/__pycache__

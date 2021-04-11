@@ -1,10 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-import startPage
-import login
-import greeting
-
+import login,startPage,greeting
 
 
 LARGEFONT =("Verdana", 35)
@@ -16,6 +13,7 @@ class tkinterApp(tk.Tk):
         
         # __init__ function for class Tk
         tk.Tk.__init__(self, *args, **kwargs)
+        self.title('Intelligent Interviewer')
 
         # self is like window - dont ask how
 
@@ -27,7 +25,7 @@ class tkinterApp(tk.Tk):
         # self.geometry
         
         # creating a container
-        container = tk.Frame(self)
+        container = tk.Frame(self, bg="blue",border=10)
         container.pack(side = "top", fill = "both", expand = True)
 
         container.grid_rowconfigure(0, weight = 1)
@@ -48,7 +46,7 @@ class tkinterApp(tk.Tk):
             self.frames[F] = frame
 
             frame.grid(row = 0, column = 0, sticky ="nsew")
-
+   
         self.show_frame(startPage.StartPage)
 
     # to display the current frame passed as

@@ -4,7 +4,7 @@ from tkinter import ttk
 import startPage
 
 
-LARGEFONT =("Verdana", 35)
+LARGEFONT =("Verdana", 25)
 
 # second window frame page1
 class Greeting(tk.Frame):
