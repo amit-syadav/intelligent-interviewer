@@ -3,17 +3,14 @@ from tkinter import ttk
 import json
 import os
 import time
+import threading
+
 from helper.time_manager import run, create_directory, this_student_directory_create
-import cv2
-import PIL.Image, PIL.ImageTk
-import pyaudio, wave
 
 
-student_folder_directory_path = create_directory("keval909") # this part should be in login file after login is successful
-this_student_folder_directory_path = this_student_directory_create(student_folder_directory_path)
-print("this stud folder directory path", this_student_folder_directory_path)
 LARGEFONT =("Verdana", 15)
-
+FRAME_BG_COLOR = "#957DAD"
+FRAME_BORDER_SIZE = 5
 
 class Questions(tk.Frame):
     
@@ -21,93 +18,188 @@ class Questions(tk.Frame):
         
         tk.Frame.__init__(self, parent)
 
+        self.create_student_folder()
+
         label_heading = ttk.Label(self, text ="Questions", font = LARGEFONT)
-        label_heading.grid(row = 0, column = 4, padx = 10, pady = 10)
+        label_heading.grid(row = 0, column = 0, padx = 10, pady = 10)
 
         label_instruction = tk.Label(self, text ="You  Will Be Proctored For Reading- Don'T Perform Any Suspicious Activity", font = LARGEFONT)
-        label_instruction.grid(row = 1, column = 4, padx = 10, pady = 10)
+        label_instruction.grid(row = 1, column = 0, padx = 10, pady = 10)
+
+        # get questions from json file
+        questions = open(self.get_file_path(), 'r')
+        self.question_dict = json.load(questions)
+
+        self.question_read_time = 5
+
+        # storing each frame on a list
+        self.question_list = []
+
+        for q_id in self.question_dict:
+            question_frame = tk.Frame(self, bg=FRAME_BG_COLOR,border=FRAME_BORDER_SIZE, highlightcolor="blue")
+            question_frame.grid(row = 2, column = 0)
+
+            label_question = tk.Label(question_frame, text =self.question_dict[q_id]["text"], font = LARGEFONT)
+            label_question.grid(row = 0, column = 0, padx = 10, pady = 10)
+
+            label_timer = tk.Label(question_frame, text = "Time allocated:\t"+str(self.question_dict[q_id]["time"])+"secs", font = LARGEFONT)
+            label_timer.grid(row = 1, column = 0, padx = 10, pady = 10)
+
+            self.question_list.append(question_frame)
+        
+        print("question list is", self.question_list)
+        self.current_question_number = 0
+
+
+        # first frame
+        self.first_question_frame = tk.Frame(self, bg=FRAME_BG_COLOR ,border=FRAME_BORDER_SIZE, highlightcolor="blue")
+        self.first_question_frame.grid(row = 2, column = 0)
+
+        first_label_question = tk.Label(self.first_question_frame, text ="Click on the next button when you are ready for", font = LARGEFONT)
+        first_label_question.grid(row = 0, column = 0, padx = 10, pady = 10)
+
+
+
+# last frame
+        self.last_question_frame = tk.Frame(self, bg=FRAME_BG_COLOR ,border=FRAME_BORDER_SIZE, highlightcolor="blue")
+        self.last_question_frame.grid(row = 2, column = 0)
+
+        last_label_question = tk.Label(self.last_question_frame, text ="All questions done", font = LARGEFONT)
+        last_label_question.grid(row = 0, column = 0, padx = 10, pady = 10)
+
+# initially show the first question
+        self.first_question_frame.tkraise()
+
 
         
 
-        # get questions from json file
+
+
         # run loop for each question
         # save_and_show timer for each question
 
-        self.question_frame = tk.Frame(self, bg="blue",border=10, highlightcolor="blue")
-        self.question_frame.grid(row = 3, column = 4)
+
+
+
+        buttonNext = ttk.Button(self, text ="Next Question",
+                            command = self.next_question )
+    
+        # putting the button in its place
+        # by using grid
+        buttonNext.grid(row = 3, column = 0, padx = 10, pady = 10)
+
+
+    def next_question(self):
+        print("current question number is", self.current_question_number)
+
+        if self.current_question_number == len(self.question_dict): #all questions done, show the end screen
+            self.last_question_frame.tkraise()
+            return
+
+        def update_question_on_screen():
+            self.question_list[ self.current_question_number ].tkraise()
+
+        question_thread = threading.Thread(target=update_question_on_screen,daemon = True)
+        question_thread.start()
+        # end question thread by join 
+        # question_thread.join()
+        # ques
         
-        variable_question_text  = tk.StringVar()
-        variable_time_allocated  = tk.IntVar()
+        self.current_question_number += 1
 
-        label_question = tk.Label(self.question_frame, textvariable = variable_question_text, font = LARGEFONT)
-        label_question.grid(row = 4, column = 4)
-        # txt.set("initial")
-
-        label_timer = tk.Label(self, textvariable= variable_time_allocated, font = LARGEFONT)
-        label_timer.grid(row = 5, column = 5, padx = 10, pady = 10)
-
-        # loading question json file to python dictionary
-        questions = open(self.get_file_path(), 'r')
-        question_dict = json.load(questions)
+        def start_recording():
+            run(str(self.current_question_number) +"_reading",self.this_student_folder_directory_path, self.question_read_time )
         
-        question_read_time = 5
-        buffer_time = 3 # extra time for which the frame will be shown even after the question recording is complete
+        recording_thread = threading.Thread(target=start_recording, daemon = True)
+        recording_thread.start()
 
-        print(question_dict)
-        self.q_id = "1"
-        # MAKE SURE ALL ENTRIES IN QUESTION.TXT ARE ORDER WISE STARTING FROM 1
-        # # print(q,type(q))
-
-        # def update_question():
-        #     # global q_id
-        #     print(self.q_id,self.q_id in question_dict)
-        #     if self.q_id in question_dict: # checking presence in txt file
-
-        #         question_text = question_dict[self.q_id]["text"]
-        #         time_allocated = question_dict[self.q_id]["time"]
-        #         print( "print save_and_show question", question_text, time_allocated )
-
-        #         variable_question_text.set( question_text )
-        #         variable_time_allocated.set( time_allocated )
-
-        #         # run(self.q_id +"_reading",this_student_folder_directory_path, question_read_time )
-        #         file_path = self.q_id +"_reading.avi"
-        #         self.record_video(file_path)
+          # Makes sure the threads have finished
+        print( "active threads in question.py",threading.active_count() )
+            # time.sleep(1)
+        print("all thread completed")
 
 
-        #         time.sleep(2) # check is this time is counted by .after method
-
-        #         print("answersing starts")
-
-        #         run(self.q_id+ "_answering", this_student_folder_directory_path, question_dict[self.q_id]['time'])
-        #         time.sleep(2)
+        # recording_thread.join()
 
 
-        #         self.q_id = int(self.q_id) + 1
-        #         self.q_id = str(self.q_id)
-        #         self.question_frame.after( (question_read_time+ time_allocated)*1000, update_question)
 
-        #     else:
-        #         variable_question_text.set( "Congratulations, all questions done!" )
-        #         variable_time_allocated.set( 0 )
 
         
-        # self.question_frame.after(5000,save_and_show_question)
-        self.show_questions()
+    def create_student_folder(self):
+        self.student_folder_directory_path = create_directory("keval909") # this part should be in login file after login is successful
+        self.this_student_folder_directory_path = this_student_directory_create(self.student_folder_directory_path)
+        print("this stud folder directory path", self.this_student_folder_directory_path)
+
+        
+            
+    # def update_question(self):
+    #     # global q_id
+    #     # self.q_id  = str( int(self.q_id) + 1)
+
+
+    #     time_allocated = self.question_dict[self.q_id]["time"]
+
+        
+
+    #     print(self.q_id,self.q_id in self.question_dict)
+
+    #     if self.q_id in self.question_dict: # checking presence in txt file
+
+
+    #         time.sleep(2)
+    #         from helper.time_manager import run
+
+
+    #         run(self.q_id +"_reading",self.this_student_folder_directory_path, self.question_read_time )
+    #         print("question read time complete")
+    #         time.sleep(2)
+    #         # run(self.q_id +"_answering",self.this_student_folder_directory_path, time_allocated )
+    #         print("question answer time complete")
+    #         # file_path = self.q_id +"_reading.avi"
+
+
+    #     else:
+    #         variable_question_text.set( "Congratulations, all questions done!" )
+    #         variable_time_allocated.set( 0 )
 
     
 
+    # self.question_frame.after(5000,update_question)
+        # self.show_questions()
+        # update_question()
 
-        # iterate each ques
-        # print ques in label
-        # start its timer
-        # record
-        # move to next question after its time
+    
+    # def show_questions(self):
+    #     # loading question json file to python dictionary
+        
+    #     self.question_read_time = 5
+    #     self.buffer_time = 3 # extra time for which the frame will be shown even after the question recording is complete
+    #     print("questions are",self.question_dict)
+    #     self.q_id = "1"
+    #     # MAKE SURE ALL ENTRIES IN QUESTION.TXT ARE ORDER WISE STARTING FROM 1
+    #     # print(q,type(q))
+    #     self.set_question()
+    #     self.update_question()
+        
+    # def set_question(self):
+    #     question_text = self.question_dict[self.q_id]["text"]
+    #     time_allocated = self.question_dict[self.q_id]["time"]
+    #     # print( "print save_and_show question", question_text, time_allocated )
+    #     self.label_question["text"] = question_text 
+    #     self.label_timer["text"]  = time_allocated 
+           
+
+
+    #         # iterate each ques
+    #         # print ques in label
+    #         # start its timer
+    #         # record
+    #         # move to next question after its time
 
 
 
 
-        # self.question_frame.after(1000, save_and_show_question)
+    #         # self.question_frame.after(1000, save_and_show_question)
 
     def get_file_path(self):
         os.getcwd()
@@ -116,144 +208,16 @@ class Questions(tk.Frame):
         file_dir = os.path.join(dir_path,'resources')
         file_path = os.path.join(file_dir,"questions_testing.json")
         return (file_path)
+        
+
 
   
+    # def __del__(self):
+    #     if self.video.isOpened():
+    #         self.video.release()
+    #         self.out.release()
 
-    def show_questions(self):
-        # print(file_path)
-
-        self.camera_frame = tk.Frame(self.question_frame, bg="blue",border=10, highlightcolor="blue")
-        self.camera_frame.grid(row = 6, column = 4)
-
-        self.video = cv2.VideoCapture(0)
         
-        self.width = self.video.get(cv2.CAP_PROP_FRAME_WIDTH)
-        self.height = self.video.get(cv2.CAP_PROP_FRAME_HEIGHT)
-        self.video.release()
-
-        self.canvas = tk.Canvas(self.camera_frame, width=self.width, height=self.height)
-        self.canvas.grid(row =7 , column = 5, padx = 10, pady = 10)
-
-
-        self.opencamera = tk.Button(self.camera_frame, text="open camera", command=self.open_camera)
-        self.opencamera.grid(row = 9, column = 5, padx = 10, pady = 10)
-
-        self.closecamera = tk.Button(self.camera_frame, text="close camera", command=self.close_camera)
-        self.closecamera.grid(row = 10, column = 5, padx = 10, pady = 10)
-
-        self.delay = 10
-
-        # self.set_camera(file_path) #this needs to be set every time you open the camera
-        self.video_recorder(10)
-
-
-
-    def video_recorder(self, duration):
-        print("video recorder on")
-
-        self.video_file_path = os.path.join(this_student_folder_directory_path, "ved101.avi")
-        self.audio_file_path = os.path.join(this_student_folder_directory_path, "aud101.wav")
-
-        self.set_camera(self.video_file_path)
-        self.set_mic(self.audio_file_path) #mic close requires file location
-
-        self.start_time = time.time()
-        self.duration = duration
-        self.save_and_show()
-
-
-
-    def set_mic(self, file_path):
-        self.open = True
-        self.rate = 44100
-        self.frames_per_buffer = 1024
-        self.channels = 2
-        self.format = pyaudio.paInt16
-        self.audio_filename = file_path
-        self.audio = pyaudio.PyAudio()
-        self.stream = self.audio.open(format=self.format,
-                                      channels=self.channels,
-                                      rate=self.rate,
-                                      input=True,
-                                      frames_per_buffer = self.frames_per_buffer)
-        self.audio_frames = []
-        self.stream.start_stream()
-
-   
-
-    def open_camera(self, file_path):
-        # self.ok = True
-        # self.set_camera(file_path)
-        print("camera opened")
-        print(self.ok)
-
-
-    def set_camera(self, file_path):
-        print("setting camera")
-        # self.ok = True
-        self.video = cv2.VideoCapture(0)
-        #create videowriter
-        self.fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        # self.out = cv2.VideoWriter('output.avi',self.fourcc,10,(640,480))
-        print("file is saved at", file_path)
-        self.out = cv2.VideoWriter(file_path,self.fourcc,10,(640,480))
-        # self.save_and_show()
-
-
-    def save_and_show(self):
-        ret, frame = self.video.read()
-        # print("in save_and_show")
-        if ret:
-            # save
-            self.out.write(frame)
-            # show 
-            self.photo = PIL.ImageTk.PhotoImage(image=PIL.Image.fromarray(frame))
-            self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
-
-            # while(self.open == True):
-            data = self.stream.read(self.frames_per_buffer) 
-            self.audio_frames.append(data)
-
-        if time.time() - self.start_time > self.duration: # time out case
-            print("time out")
-            self.close_camera()
-            self.close_mic()
-        else: 
-            self.camera_frame.after(self.delay, self.save_and_show)
-
-
-    def close_camera(self):
-        print("camera closed")
-        self.ok = False
-        self.video.release()
-        self.out.release()
-    
-    def close_mic(self):
-
-        # if self.open==True:
-        self.open = False
-        self.stream.stop_stream()
-        self.stream.close()
-        self.audio.terminate()
-
-        waveFile = wave.open(self.audio_file_path, 'wb')
-        waveFile.setnchannels(self.channels)
-        waveFile.setsampwidth(self.audio.get_sample_size(self.format))
-        waveFile.setframerate(self.rate)
-        waveFile.writeframes(b''.join(self.audio_frames))
-        waveFile.close()
-
-
-    def __del__(self):
-        if self.video.isOpened():
-            self.video.release()
-            self.out.release()
-
-
-
-    
-
-
 
 
 

@@ -18,12 +18,12 @@ class Checker(tk.Tk):
 
         tk.Tk.__init__(self, *args, **kwargs)
 
-        width= self.winfo_screenwidth() 
-        height= self.winfo_screenheight()
+        width= self.winfo_screenwidth() //2
+        height= self.winfo_screenheight()//2
         self.geometry("%dx%d" % (width, height))
 
         container = tk.Frame(self)
-        container.pack(side = "top", fill = "both", expand = True)
+        container.pack(side = "right", fill = "both", expand = True)
 
         container.grid_rowconfigure(0, weight = 1)
         container.grid_columnconfigure(0, weight = 1)

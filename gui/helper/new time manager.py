@@ -45,7 +45,7 @@ class VideoRecorder():
 					# timer_current = time.time() - timer_start
 					time.sleep(0.16)
 					gray = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
-					cv2.imshow('video_frame', gray)
+					# cv2.imshow('video_frame', gray)
 					cv2.waitKey(1)
 			else:
 				break
@@ -152,31 +152,7 @@ def start_AVrecording(filename):
 
 
 
-# def start_video_recording(filename):
-
-#     global video_thread
-
-#     video_thread = VideoRecorder()
-#     video_thread.start()
-
-#     return filename
-
-
-# def start_audio_recording(filename):
-
-#     global audio_thread
-
-#     audio_thread = AudioRecorder()
-#     audio_thread.start()
-
-#     return filename
-
-
-
-
 def stop_AVrecording(filename):
-	print( "active threads in time managere.py",threading.active_count() )
-
 
 	audio_thread.stop() 
 	frame_counts = video_thread.frame_counts
@@ -188,60 +164,8 @@ def stop_AVrecording(filename):
 	video_thread.stop()
 
 	# Makes sure the threads have finished
-
 	while threading.active_count() > 1:
 		time.sleep(1)
-
-
-
-
-def this_student_directory_create(student_folder_directory_path):
-	global this_student_folder
-
-	# local_path = os.getcwd() #replace by os.path.realpath
-	# parent_path = os.path.dirname(local_path)
-	# data_folder = os.path.join( str(parent_path) ,"student_interview_data")
-	this_student_directory =  os.path.join(student_folder_directory_path, this_student_folder)
-	print("this_student_directory",this_student_directory)
-	# check for student_interview_data folder
-
-	if not os.path.exists( this_student_directory ):
-		print("THIS student directory NOT found.. so creating STUDENT SPECIFIC FOLDER")
-		os.mkdir(  this_student_directory )
-	# print(os.path.exists(os.path.join(data_folder, this_student_folder) ))
-	# print(os.path.join(data_folder, this_student_folder) )
-	
-	else:
-		shutil.rmtree( this_student_directory )
-		print("this student specifuc directory already existes so deleted")
-		os.mkdir(this_student_directory )
-	return  this_student_directory
-
-
-
-def create_directory(student_folder):
-	global this_student_folder
-	this_student_folder = student_folder #this will be used by other functions
-	local_path = os.path.realpath(__file__)
-	parent_path = os.path.dirname( (os.path.dirname(local_path) ) )
-	student_directory_path = os.path.join( str(parent_path) ,"student_interview_data" )
-
-	# check for student_interview_data folder
-
-	if not os.path.exists(student_directory_path ):
-		print("No student directory file system found.. so creating")
-		# print((os.path.join( str(parent_path) ,"student_interview_data") ))
-		# print(os.getcwd())
-		os.mkdir(student_directory_path )
-		print(student_directory_path)
-	else:
-		print("\n student directory file system found \n")
-
-		return student_directory_path
-
-		# NO NEED TO DELETE IF ITS EXISTS
-
-
 
 
 this_student_folder = ""

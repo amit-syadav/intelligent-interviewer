@@ -5,3 +5,5 @@ file system not independent - files location depend on directory of run
 see text generated to check if its correct to show transparency
 
 replace os.getcwd by os.path.realpath
+
+if i change a question the text analysis should also change? if yes then where to change
