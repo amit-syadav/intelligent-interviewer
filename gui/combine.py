@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-import login,startPage,greeting
+# make file name and main class name same for better readability
+import login,startPage,greeting, questions
 
 
 LARGEFONT =("Verdana", 35)
@@ -36,7 +37,7 @@ class tkinterApp(tk.Tk):
 
         # iterating through a tuple consisting
         # of the different page layouts
-        for F in (startPage.StartPage,login.Login, greeting.Greeting):
+        for F in (startPage.StartPage,login.Login, greeting.Greeting, questions.Questions):
 
             frame = F(container, self)
 

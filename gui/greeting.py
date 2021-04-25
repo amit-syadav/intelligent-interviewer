@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-import startPage
+import startPage, questions
+
 
 
 LARGEFONT =("Verdana", 25)
@@ -34,6 +35,13 @@ class Greeting(tk.Frame):
         # putting the button in its place
         # by using grid
         button1.grid(row = 2, column = 1, padx = 10, pady = 10)
+
+        button2 = ttk.Button(self, text ="Questions",
+                            command = lambda : controller.show_frame(questions.Questions))
+    
+        # putting the button in its place
+        # by using grid
+        button2.grid(row = 2, column = 1, padx = 10, pady = 10)
 
 # import helper.checker as chk
 # app =chk.Checker(Greeting)

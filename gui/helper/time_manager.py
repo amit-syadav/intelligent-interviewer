@@ -175,7 +175,7 @@ def start_AVrecording(filename):
 
 
 def stop_AVrecording(filename):
-	print( "active threads in time managere.py",threading.active_count() )
+	print( "active threads in time manager.py",threading.active_count() )
 
 
 	audio_thread.stop() 
@@ -189,7 +189,7 @@ def stop_AVrecording(filename):
 
 	# Makes sure the threads have finished
 
-	while threading.active_count() > 1:
+	while threading.active_count() > 3:
 		time.sleep(1)
 
 

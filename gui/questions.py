@@ -7,6 +7,15 @@ import threading
 
 from helper.time_manager import run, create_directory, this_student_directory_create
 
+"""
+todo:
+add gif of recording when recording in progress
+get student directory name from login .py 
+video preview window is shown only for the first question, why so?
+question frames are getting overlap because of different size -- one solutions is fix the width and height of all question frame
+make button of end test RED in color
+show stopwatch timer in screen if possible 
+"""
 
 LARGEFONT =("Verdana", 15)
 FRAME_BG_COLOR = "#957DAD"
@@ -18,6 +27,8 @@ class Questions(tk.Frame):
         
         tk.Frame.__init__(self, parent)
 
+        self.controller = controller
+
         self.create_student_folder()
 
         label_heading = ttk.Label(self, text ="Questions", font = LARGEFONT)
@@ -28,14 +39,19 @@ class Questions(tk.Frame):
 
         # get questions from json file
         questions = open(self.get_file_path(), 'r')
-        self.question_dict = json.load(questions)
+        self.question_dict =  json.load(questions) 
+        print("\nquestion dict ---",self.question_dict)
+
+        sorted_questions_keys = sorted( self.question_dict.keys() )
+        print("\nsorted question keys ---", sorted_questions_keys)
+        
 
         self.question_read_time = 5
 
         # storing each frame on a list
         self.question_list = []
 
-        for q_id in self.question_dict:
+        for q_id in sorted_questions_keys:
             question_frame = tk.Frame(self, bg=FRAME_BG_COLOR,border=FRAME_BORDER_SIZE, highlightcolor="blue")
             question_frame.grid(row = 2, column = 0)
 
@@ -70,30 +86,19 @@ class Questions(tk.Frame):
 # initially show the first question
         self.first_question_frame.tkraise()
 
-
-        
-
-
-
-        # run loop for each question
-        # save_and_show timer for each question
-
-
-
-
-        buttonNext = ttk.Button(self, text ="Next Question",
+        self.buttonNext = ttk.Button(self, text ="Next",
                             command = self.next_question )
-    
         # putting the button in its place
         # by using grid
-        buttonNext.grid(row = 3, column = 0, padx = 10, pady = 10)
+        self.buttonNext.grid(row = 3, column = 0, padx = 10, pady = 10)
+
 
 
     def next_question(self):
         print("current question number is", self.current_question_number)
 
         if self.current_question_number == len(self.question_dict): #all questions done, show the end screen
-            self.last_question_frame.tkraise()
+            self.show_last_frame()
             return
 
         def update_question_on_screen():
@@ -101,106 +106,45 @@ class Questions(tk.Frame):
 
         question_thread = threading.Thread(target=update_question_on_screen,daemon = True)
         question_thread.start()
-        # end question thread by join 
-        # question_thread.join()
-        # ques
-        
+
         self.current_question_number += 1
+
 
         def start_recording():
             run(str(self.current_question_number) +"_reading",self.this_student_folder_directory_path, self.question_read_time )
-        
+            print("inside start recording")
+
+            ans_time = self.question_dict[str( self.current_question_number )]["time"]
+            current_frame =  self.question_list[ self.current_question_number -1]
+            label_question = tk.Label(current_frame, text ="Start answering, time allocated for answering is "+ str(ans_time), font = LARGEFONT)
+            label_question.grid(row = 2, column = 0, padx = 10, pady = 10)
+
+            run(str(self.current_question_number) +"answering",self.this_student_folder_directory_path, ans_time  )
+
         recording_thread = threading.Thread(target=start_recording, daemon = True)
         recording_thread.start()
 
           # Makes sure the threads have finished
-        print( "active threads in question.py",threading.active_count() )
+        print("active threads in question.py",threading.active_count() )
             # time.sleep(1)
         print("all thread completed")
 
 
         # recording_thread.join()
+    def show_last_frame(self):
+        self.last_question_frame.tkraise()
+        self.buttonNext.configure(text = "End test", command=self.quit)
 
 
 
 
-        
     def create_student_folder(self):
         self.student_folder_directory_path = create_directory("keval909") # this part should be in login file after login is successful
         self.this_student_folder_directory_path = this_student_directory_create(self.student_folder_directory_path)
         print("this stud folder directory path", self.this_student_folder_directory_path)
 
+       
         
-            
-    # def update_question(self):
-    #     # global q_id
-    #     # self.q_id  = str( int(self.q_id) + 1)
-
-
-    #     time_allocated = self.question_dict[self.q_id]["time"]
-
-        
-
-    #     print(self.q_id,self.q_id in self.question_dict)
-
-    #     if self.q_id in self.question_dict: # checking presence in txt file
-
-
-    #         time.sleep(2)
-    #         from helper.time_manager import run
-
-
-    #         run(self.q_id +"_reading",self.this_student_folder_directory_path, self.question_read_time )
-    #         print("question read time complete")
-    #         time.sleep(2)
-    #         # run(self.q_id +"_answering",self.this_student_folder_directory_path, time_allocated )
-    #         print("question answer time complete")
-    #         # file_path = self.q_id +"_reading.avi"
-
-
-    #     else:
-    #         variable_question_text.set( "Congratulations, all questions done!" )
-    #         variable_time_allocated.set( 0 )
-
-    
-
-    # self.question_frame.after(5000,update_question)
-        # self.show_questions()
-        # update_question()
-
-    
-    # def show_questions(self):
-    #     # loading question json file to python dictionary
-        
-    #     self.question_read_time = 5
-    #     self.buffer_time = 3 # extra time for which the frame will be shown even after the question recording is complete
-    #     print("questions are",self.question_dict)
-    #     self.q_id = "1"
-    #     # MAKE SURE ALL ENTRIES IN QUESTION.TXT ARE ORDER WISE STARTING FROM 1
-    #     # print(q,type(q))
-    #     self.set_question()
-    #     self.update_question()
-        
-    # def set_question(self):
-    #     question_text = self.question_dict[self.q_id]["text"]
-    #     time_allocated = self.question_dict[self.q_id]["time"]
-    #     # print( "print save_and_show question", question_text, time_allocated )
-    #     self.label_question["text"] = question_text 
-    #     self.label_timer["text"]  = time_allocated 
-           
-
-
-    #         # iterate each ques
-    #         # print ques in label
-    #         # start its timer
-    #         # record
-    #         # move to next question after its time
-
-
-
-
-    #         # self.question_frame.after(1000, save_and_show_question)
-
     def get_file_path(self):
         os.getcwd()
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -208,6 +152,11 @@ class Questions(tk.Frame):
         file_dir = os.path.join(dir_path,'resources')
         file_path = os.path.join(file_dir,"questions_testing.json")
         return (file_path)
+
+
+
+    def quit(self):
+        self.controller.destroy()
         
 
 
