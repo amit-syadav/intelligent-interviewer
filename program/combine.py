@@ -6,7 +6,7 @@ from components.text.src import text_main
 from components.audio import testpro
 from components.audio import audio_main
 from components.video.Emotion_detection.src import emotions
-#from gui import combine
+from gui import combine
 from collections import Counter
 import result_creation
 import mail_sender_code
@@ -174,4 +174,4 @@ def combine_f(candidate="keval909"):
 
 
 # combine_f(student_folder_directory)
-# combine_f()
+combine_f()

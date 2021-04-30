@@ -127,7 +127,7 @@ class Quiz(tk.Frame):
             next_button.place(x=350, y=380)
 
             # This is the second button which is used to Quit the GUI
-            quit_button = tk.Button(self, text="Quit", command=self.controller.destroy(),
+            quit_button = tk.Button(self, text="Quit", command=self.destroy,
                                     width=5, bg="black", fg="white", font=("ariel", 16, " bold"))
 
             # placing the Quit button on the screen
@@ -148,10 +148,10 @@ class Quiz(tk.Frame):
             if self.q_no == data_size:
 
                 # if it is correct then it displays the score
-                # display_result()
+                display_result()
 
                 # destroys the GUI
-                self.controller.destroy()
+                # self.controller.destroy()
             else:
                 # shows the next question
                 display_question()
