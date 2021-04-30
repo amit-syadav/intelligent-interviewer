@@ -55,7 +55,7 @@ try:
     read question and allocated time then run a loop to capture video and save it
     """
     student_folder_directory = mail.split(".")[0]
-    print(" directory name ", student_folder_directory)
+    #print(" directory name ", student_folder_directory)
     create_directory(student_folder_directory)
 
     q = json.load(questions)

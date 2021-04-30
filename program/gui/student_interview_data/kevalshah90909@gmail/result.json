@@ -1,0 +1,22 @@
+{
+    "audio": [
+        "a Male, mood of speech: speaking passionately",
+        0.8,
+        90.0395,
+        58
+    ],
+    "head_pose": 5.0,
+    "eye_tracker": 22.0,
+    "mouth_distance": 21.0,
+    "emotions": [
+        32,
+        9
+    ],
+    "face_spoofing": 18.0,
+    "person_phone": [
+        "not using",
+        0
+    ],
+    "mcq": 0,
+    "text": []
+}

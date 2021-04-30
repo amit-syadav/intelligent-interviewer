@@ -1,8 +1,6 @@
  result={
     "audio": [
         [
-            "a female, mood of speech: Showing no emotion, normal",
-            "a female, mood of speech: Showing no emotion, normal",
             "a Male, mood of speech: speaking passionately",
             "a Male, mood of speech: speaking passionately",
             "a Male, mood of speech: speaking passionately"

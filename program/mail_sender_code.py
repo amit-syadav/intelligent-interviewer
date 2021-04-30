@@ -9,8 +9,8 @@ def mail_sender_f(email):
     #https://www.google.com/settings/security/lesssecureapps
     
 
-    body = '''project ban gaya hai tension mat le
-    NEXT SEM TUZHE HE SAB BANANA HAI
+    body = '''Interview Intelligent system 
+    Evaluation based on your performance
     '''
     f=open("data.txt","r")
     # put your email here

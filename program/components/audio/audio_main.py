@@ -134,6 +134,7 @@ def myspbala(c, filename):
     Measure ratio between speaking duration and total speaking duration
     """
     z2 = run_praat_file(c, filename)
+    print(z2[3])
     z3 = int(z2[3])  # will be the integer number 10
     z4 = float(z2[6])  # will be the floating point number 8.3
     #print("balance=", z4, "# ratio (speaking duration)/(original duration)")

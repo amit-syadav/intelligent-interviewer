@@ -179,9 +179,9 @@ def stop_AVrecording(filename):
 	frame_counts = video_thread.frame_counts
 	elapsed_time = time.time() - video_thread.start_time
 	recorded_fps = frame_counts / elapsed_time
-	print( "total frames " + str(frame_counts) )
-	print( "elapsed time " + str(elapsed_time) )
-	print( "recorded fps " + str(recorded_fps) )
+	#print( "total frames " + str(frame_counts) )
+	#print( "elapsed time " + str(elapsed_time) )
+	#print( "recorded fps " + str(recorded_fps) )
 	video_thread.stop() 
 
 	# Makes sure the threads have finished
@@ -218,10 +218,10 @@ def this_student_directory_create(this_student_folder):
 	# check for student_interview_data folder
 
 	if not os.path.exists(os.path.join(data_folder, this_student_folder) ):
-		print("No THIS student directory found.. so creating STUDENT SPECIFIC FOLDER")
+		#print("No THIS student directory found.. so creating STUDENT SPECIFIC FOLDER")
 		os.mkdir(os.path.join(data_folder, this_student_folder) )
-	print(os.path.exists(os.path.join(data_folder, this_student_folder) ))
-	print(os.path.join(data_folder, this_student_folder) )
+	#print(os.path.exists(os.path.join(data_folder, this_student_folder) ))
+	#print(os.path.join(data_folder, this_student_folder) )
 
 
 def create_directory(student_folder):
@@ -231,7 +231,7 @@ def create_directory(student_folder):
 	# check for student_interview_data folder
 
 	if not os.path.exists(os.path.join( str(parent_path) ,"student_interview_data") ):
-		print("No student directory found.. so creating")
+		#print("No student directory found.. so creating")
 		# print((os.path.join( str(parent_path) ,"student_interview_data") ))
 		# print(os.getcwd())
 		os.mkdir(os.path.join( str(parent_path) ,"student_interview_data"),0o777 )
