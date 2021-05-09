@@ -21,26 +21,30 @@ class DigitalClock(tk.Tk):
             foreground='red')
 
         # label
+        start_time = 10
         self.label = ttk.Label(
             self,
-            text=self.time_string(),
+            text=start_time,
             font=('Digital-7', 40))
 
         self.label.pack(expand=True)
 
         # schedule an update every 1 second
-        self.label.after(1000, self.update)
+        self.label.after(1000, lambda : self.update(start_time))
 
-    def time_string(self):
-        return time.strftime('%H:%M:%S')
+    # def time_string(self,t):
+    #     return t-1
+        # return time.strftime('%H:%M:%S')
 
-    def update(self):
+    def update(self,t):
         """ update the label every 1 second """
-
-        self.label.configure(text=self.time_string())
+        # t = self.time_string()
+        t-=1
+        self.label.configure(text=t)
 
         # schedule another timer
-        self.label.after(1000, self.update)
+        if t > 0:
+            self.label.after(1000, lambda : self.update(t))
 
 
 if __name__ == "__main__":

@@ -21,11 +21,11 @@ class Quiz(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        local_path = os.getcwd()
-        parent_path = os.path.dirname(local_path)
-        print(local_path)
+        local_path = os.path.realpath(__file__)
+        parent_path = os.path.dirname(os.path.realpath(__file__))
+        # print(local_path)
         print(parent_path)
-        filename = os.path.join(str(local_path), "gui", "data.json")
+        filename = os.path.join(str(parent_path), "data.json")
         print(filename)
         f = open(filename, "r")
         data = json.load(f)

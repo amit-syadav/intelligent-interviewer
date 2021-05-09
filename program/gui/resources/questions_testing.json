@@ -1,6 +1,10 @@
 {
   "1": {
     "text": "Tell me about yourself? ",
-    "time": 20
+    "time": 10
+  },
+  "2": {
+    "text": "Question 2? ",
+    "time": 10
   }
 }

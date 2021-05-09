@@ -1,3 +1,4 @@
+from gui import combine
 import os
 import json
 from components.video import eye_tracker, face_spoofing, head_pose_estimation
@@ -6,7 +7,6 @@ from components.text.src import text_main
 from components.audio import testpro
 from components.audio import audio_main
 from components.video.Emotion_detection.src import emotions
-from gui import combine
 from collections import Counter
 import result_creation
 import mail_sender_code

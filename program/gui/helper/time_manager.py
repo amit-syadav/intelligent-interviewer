@@ -152,28 +152,6 @@ def start_AVrecording(filename):
 
 
 
-# def start_video_recording(filename):
-
-#     global video_thread
-
-#     video_thread = VideoRecorder()
-#     video_thread.start()
-
-#     return filename
-
-
-# def start_audio_recording(filename):
-
-#     global audio_thread
-
-#     audio_thread = AudioRecorder()
-#     audio_thread.start()
-
-#     return filename
-
-
-
-
 def stop_AVrecording(filename):
 	print( "active threads in time manager.py",threading.active_count() )
 
@@ -260,13 +238,13 @@ def run(filename, this_student_folder_directory_path, duration=15):
 	this_student_folder = this_student_folder_directory_path
 	
 	start_AVrecording(filename)  
-	
-	while duration: 
-		mins, secs = divmod(duration, 60) 
-		timer = '{:02d}:{:02d}'.format(mins, secs) 
-		print(timer, end="\r") 
-		time.sleep(1) 
-		duration -= 1
+	time.sleep(duration)
+	# while duration: 
+	# 	mins, secs = divmod(duration, 60) 
+	# 	timer = '{:02d}:{:02d}'.format(mins, secs) 
+	# 	print(timer, end="\r") 
+	# 	time.sleep(1) 
+	# 	duration -= 1
 		
 	stop_AVrecording(filename)
 	print ("\n Done \n")

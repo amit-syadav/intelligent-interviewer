@@ -52,10 +52,10 @@ class Login(tk.Frame):
         def checkcred():
             username = email_val.get()
             password = password_val.get()
-            local_path = os.getcwd()
+            local_path = os.path.realpath(__file__)
             parent_path = os.path.dirname(local_path)
             # filename = os.path.join(str(local_path), "data.db")
-            filename = os.path.join(str(local_path), "gui", "data.db")
+            filename = os.path.join(str(parent_path),"data.db")
             print(filename)
             con = sql.connect(filename)
             print(con)
